@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Integration Agency Master Playbook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #2dd4bf;
+            --primary-glow: rgba(45, 212, 191, 0.3);
+            --secondary: #a855f7;
+            --secondary-glow: rgba(168, 85, 247, 0.3);
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.3);
+            --emerald: #10b981;
+            --rose: #f43f5e;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(45, 212, 191, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 5rem 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Card styling */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: var(--glass-blur);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0.7;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+        }
+
+        .card-title svg {
+            width: 28px;
+            height: 28px;
+            color: var(--primary);
+        }
+
+        /* Calculator Section */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        .calc-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .input-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .input-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(45, 212, 191, 0.1);
+            padding: 0.2rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(45, 212, 191, 0.2);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+
+        .calc-outputs {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 1.25rem;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .metric-value.highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.75rem;
+        }
+
+        /* Interactive Architecture Flowchart */
+        .diagram-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-top: 1.5rem;
+        }
+
+        .diagram-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        @media (max-width: 900px) {
+            .diagram-flow {
+                flex-direction: column;
+                align-items: center;
+            }
+            .diagram-arrow {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+        }
+
+        .diagram-node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 16px;
+            width: 220px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .diagram-node:hover, .diagram-node.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            background: rgba(45, 212, 191, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .diagram-node-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .diagram-node-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .diagram-arrow {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .node-details-card {
+            margin-top: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: none;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .node-details-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Lead Channels Grid */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .channels-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .channel-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .channel-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .channel-badge {
+            font-size: 0.75rem;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .channel-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+        }
+
+        .channel-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .channel-tips {
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Outreach copy section */
+        .outreach-builder {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .outreach-builder {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .builder-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--secondary);
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        .builder-output-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .output-box {
+            flex-grow: 1;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            min-height: 300px;
+            max-height: 450px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px var(--primary-glow);
+        }
+
+        .copy-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Roadmap checklist */
+        .roadmap-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .roadmap-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 6px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+
+        .roadmap-item.completed .checkbox-container {
+            border-color: var(--emerald);
+            background: var(--emerald);
+        }
+
+        .checkbox-container svg {
+            width: 14px;
+            height: 14px;
+            color: #ffffff;
+            display: none;
+        }
+
+        .roadmap-item.completed .checkbox-container svg {
+            display: block;
+        }
+
+        .roadmap-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .roadmap-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #ffffff;
+            transition: color 0.2s;
+        }
+
+        .roadmap-item.completed .roadmap-title {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .roadmap-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            height: 12px;
+            width: 100%;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer strong {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-badge">
+            <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Interactive Blueprint
+        </div>
+        <h1>Agency Scaling Playbook</h1>
+        <p class="subtitle">A visual, interactive study guide for building and scaling custom e-commerce integrations to $10,000/month.</p>
+    </header>
+
+    <main>
+        <!-- Section 1: Monetization Calculator -->
+        <section class="card">
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                    <line x1="12" y1="18" x2="12" y2="18"/>
+                    <line x1="16" y1="14" x2="16" y2="18"/>
+                    <line x1="16" y1="10" x2="16" y2="10"/>
+                    <line x1="12" y1="14" x2="12" y2="14"/>
+                    <line x1="12" y1="10" x2="12" y2="10"/>
+                    <line x1="8" y1="14" x2="8" y2="18"/>
+                    <line x1="8" y1="10" x2="8" y2="10"/>
+                </svg>
+                1. Agency Revenue & Profit Projection Calculator
+            </h2>
+            <div class="calculator-grid">
+                <div class="calc-inputs">
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-label">Custom Integration Script (One-time Setup)</span>
+                            <span class="input-val" id="val-setup">$2,500</span>
+                        </div>
+                        <input type="range" id="input-setup" min="1000" max="5000" step="250" value="2500" oninput="calculateRevenue()">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-label">Validation Gate Add-on (Premium Add-on)</span>
+                            <span class="input-val" id="val-addon">$750</span>
+                        </div>
+                        <input type="range" id="input-addon" min="300" max="1500" step="50" value="750" oninput="calculateRevenue()">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-label">Monthly Maintenance SLA Rate</span>
+                            <span class="input-val" id="val-sla">$250/mo</span>
+                        </div>
+                        <input type="range" id="input-sla" min="100" max="500" step="25" value="250" oninput="calculateRevenue()">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-label-row">
+                            <span class="input-label">Active SLA Client Count</span>
+                            <span class="input-val" id="val-clients">10</span>
+                        </div>
+                        <input type="range" id="input-clients" min="1" max="30" step="1" value="10" oninput="calculateRevenue()">
+                    </div>
+                </div>
+
+                <div class="calc-outputs">
+                    <div class="metric-card">
+                        <div class="metric-label">Monthly Recurring Revenue (SLA)</div>
+                        <div class="metric-value" id="out-mrr">$2,500</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">One-Time Setup & Upgrades Total</div>
+                        <div class="metric-value" id="out-onetime">$32,500</div>
+                    </div>
+                    <div class="metric-card" style="border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.05);">
+                        <div class="metric-label">Projected 1st-Year Revenue</div>
+                        <div class="metric-value highlight" id="out-annual">$62,500</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Technical Architecture -->
+        <section class="card">
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                    <polyline points="2 17 12 22 22 17"/>
+                    <polyline points="2 12 12 17 22 12"/>
+                </svg>
+                2. Interactive Technical Architecture
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">Click on any component in the pipeline below to inspect its detailed specifications, protocols, and implementation rules.</p>
+            
+            <div class="diagram-container">
+                <div class="diagram-flow">
+                    <div class="diagram-node active" id="node-feeds" onclick="selectNode('feeds')">
+                        <div class="diagram-node-title">Manufacturer Feeds</div>
+                        <div class="diagram-node-desc">CSV / Excel files</div>
+                    </div>
+                    
+                    <div class="diagram-arrow">➔</div>
+                    
+                    <div class="diagram-node" id="node-validator" onclick="selectNode('validator')">
+                        <div class="diagram-node-title">Python ETL Validator</div>
+                        <div class="diagram-node-desc">Local micro-service</div>
+                    </div>
+                    
+                    <div class="diagram-arrow">➔</div>
+                    
+                    <div class="diagram-node" id="node-gate" onclick="selectNode('gate')">
+                        <div class="diagram-node-title">Validation Gate</div>
+                        <div class="diagram-node-desc">Pricing & stock filters</div>
+                    </div>
+                    
+                    <div class="diagram-arrow">➔</div>
+                    
+                    <div class="diagram-node" id="node-api" onclick="selectNode('api')">
+                        <div class="diagram-node-title">Store APIs</div>
+                        <div class="diagram-node-desc">Shopify / WooCommerce</div>
+                    </div>
+                </div>
+
+                <!-- Node Details Panel -->
+                <div class="node-details-card" id="details-feeds" style="display: block;">
+                    <div class="node-details-title">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Manufacturer Feeds Specification
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Format:</strong> Comma-separated values (.csv) or Excel spreadsheets (.xlsx).</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Protocols:</strong> Frequently retrieved securely via SFTP, secure HTTPS links, or supplier API endpoints.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);"><strong>Key Fields:</strong> Requires Manufacturer SKU (acting as the absolute source of truth), wholesale price, and current stock level.</p>
+                </div>
+
+                <div class="node-details-card" id="details-validator">
+                    <div class="node-details-title">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                        Python ETL Validator Engine
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Extraction:</strong> Python script connects to feed servers, downloads the data, and reads it using modular readers.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Transformation:</strong> Sanitizes data types (converts strings to floats, strips whitespace, handles missing headers).</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);"><strong>Concurrency:</strong> Optimized execution using asynchronous request handling to map multiple manufacturers concurrently.</p>
+                </div>
+
+                <div class="node-details-card" id="details-gate">
+                    <div class="node-details-title">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                        Validation Gate (Rules Engine)
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Negative Price Block:</strong> Automatically halts publishing if price <= 0.00 to avoid critical retail mistakes.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Margin Shield:</strong> Blocks updates where the wholesale price rises above the current retail price (preventing selling at a loss).</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);"><strong>Out-of-Stock Override:</strong> Flags instances of empty stock strings and defaults them to 0 rather than keeping the old numbers.</p>
+                </div>
+
+                <div class="node-details-card" id="details-api">
+                    <div class="node-details-title">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        WooCommerce & Shopify REST APIs
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Shopify Endpoint:</strong> PUT requests to `/admin/api/2023-10/inventory_levels/set.json` using API access tokens.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>WooCommerce Endpoint:</strong> POST requests to `/wp-json/wc/v3/products/batch` using consumer key and secret credentials.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);"><strong>Rate-Limits:</strong> Shopify defaults to 4 req/sec. Implement sleep statements to throttle batch transactions and avoid 429 timeouts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Client Sourcing -->
+        <section class="card">
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                3. High-Intent Client Sourcing Channels
+            </h2>
+            <div class="channels-grid">
+                <div class="channel-card">
+                    <div class="channel-badge" style="background: rgba(45, 212, 191, 0.15); border-color: rgba(45, 212, 191, 0.2); color: var(--primary);">Upwork Feed</div>
+                    <div class="channel-title">Upwork RSS Scraping</div>
+                    <div class="channel-desc">Scan job posts matching "Shopify QuickBooks Sync", "WooCommerce ERP integration", or "CSV catalog sync".</div>
+                    <div class="channel-tips">🎯 **Tip:** Clients posting here are in active pain with budgets. Apply within the first 60 minutes.</div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-badge">ThomasNet</div>
+                    <div class="channel-title">Industrial Directory</div>
+                    <div class="channel-desc">Search ThomasNet for wholesale distributors (HVAC, piping, electric). They have large catalogs but legacy IT systems.</div>
+                    <div class="channel-tips">🏭 **Tip:** Look for traditional businesses with catalogs > 5,000 items running old websites.</div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-badge" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.2); color: var(--secondary);">Social Listening</div>
+                    <div class="channel-title">Reddit & X / Twitter</div>
+                    <div class="channel-desc">Monitor search terms like "Shopify out of stock issues", "WooCommerce inventory slow sync", or ERP integration struggles.</div>
+                    <div class="channel-tips">💬 **Tip:** Provide genuine value on public threads first before sliding into their DMs.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Dynamic Outreach Builder -->
+        <section class="card">
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                4. Dynamic Outreach Pitch Generator
+            </h2>
+            <div class="outreach-builder">
+                <div class="builder-form">
+                    <div class="input-group">
+                        <label class="input-label" for="client-name">Contact Person Name</label>
+                        <input class="form-input" type="text" id="client-name" value="John" oninput="updatePitch()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="company-name">Company Name</label>
+                        <input class="form-input" type="text" id="company-name" value="Industrial Supply Co." oninput="updatePitch()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="website-url">Website URL</label>
+                        <input class="form-input" type="text" id="website-url" value="industrialsupplyco.com" oninput="updatePitch()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="store-platform">E-Commerce Platform</label>
+                        <select class="form-input" id="store-platform" onchange="updatePitch()">
+                            <option value="Shopify">Shopify</option>
+                            <option value="WooCommerce">WooCommerce</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="builder-output-container">
+                    <div class="output-box" id="pitch-output">Loading pitch...</div>
+                    <div>
+                        <button class="copy-btn" onclick="copyPitch()">
+                            <svg id="copy-icon" style="width:16px;height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                            </svg>
+                            <span id="copy-text">Copy Outreach Draft</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Launch Roadmap -->
+        <section class="card">
+            <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                5. $10k/Month Roadmap Checklist
+            </h2>
+            <div class="progress-text" id="progress-percent">0% Completed</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-indicator"></div>
+            </div>
+
+            <div class="roadmap-list">
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Build a local Micro-ETL POC</div>
+                        <div class="roadmap-desc">Ensure you can read raw CSV datasets, validate rules, and execute test runs locally (Completed in Phase 1).</div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Configure Automated Scraping Engine</div>
+                        <div class="roadmap-desc">Use duckduckgo-search to mine active storefront URLs and crawl contact details without high API fees.</div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Launch Upwork RSS Monitoring Daemon</div>
+                        <div class="roadmap-desc">Run the job alerting script 24/7 on a cloud platform (like PythonAnywhere) to alert Discord instantly.</div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Execute First Outreach Wave</div>
+                        <div class="roadmap-desc">Pitch 20 highly qualified B2B wholesale leads using our dynamic validation gate template.</div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Close First Integration Client ($2,000+)</div>
+                        <div class="roadmap-desc">Land a contract to automate inventory. Deliver clean sync scripts with validation alerts configured.</div>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" onclick="toggleRoadmapItem(this)">
+                    <div class="checkbox-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="roadmap-content">
+                        <div class="roadmap-title">Upsell SLA Monthly Support ($250/mo)</div>
+                        <div class="roadmap-desc">Secure recurring maintenance contracts with closed clients to start stacking predictable MRR.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Interactive Study Guide & Agency Playbook &bull; Made for <strong>Aum</strong></p>
+    </footer>
+
+    <script>
+        // 1. Calculator Logic
+        function calculateRevenue() {
+            const setup = parseInt(document.getElementById('input-setup').value);
+            const addon = parseInt(document.getElementById('input-addon').value);
+            const sla = parseInt(document.getElementById('input-sla').value);
+            const clients = parseInt(document.getElementById('input-clients').value);
+
+            // Update range labels
+            document.getElementById('val-setup').textContent = `$${setup.toLocaleString()}`;
+            document.getElementById('val-addon').textContent = `$${addon.toLocaleString()}`;
+            document.getElementById('val-sla').textContent = `$${sla.toLocaleString()}/mo`;
+            document.getElementById('val-clients').textContent = clients;
+
+            // Calculations
+            const mrr = sla * clients;
+            const oneTimeTotal = (setup + addon) * clients; // Assuming setup+addon for each
+            const annualRevenue = (mrr * 12) + oneTimeTotal;
+
+            // Update displays
+            document.getElementById('out-mrr').textContent = `$${mrr.toLocaleString()}`;
+            document.getElementById('out-onetime').textContent = `$${oneTimeTotal.toLocaleString()}`;
+            document.getElementById('out-annual').textContent = `$${annualRevenue.toLocaleString()}`;
+        }
+
+        // 2. Interactive Diagram Logic
+        function selectNode(nodeId) {
+            // Remove active classes
+            document.querySelectorAll('.diagram-node').forEach(node => node.classList.remove('active'));
+            document.querySelectorAll('.node-details-card').forEach(card => card.style.display = 'none');
+
+            // Set active
+            document.getElementById(`node-${nodeId}`).classList.add('active');
+            document.getElementById(`details-${nodeId}`).style.display = 'block';
+        }
+
+        // 3. Dynamic Outreach Generator Logic
+        function updatePitch() {
+            const name = document.getElementById('client-name').value || '[Name]';
+            const company = document.getElementById('company-name').value || '[Company Name]';
+            const website = document.getElementById('website-url').value || '[Website]';
+            const platform = document.getElementById('store-platform').value;
+
+            const subject = `Quick question about inventory updates for ${company}`;
+            const body = `Hi ${name},
+
+I came across ${company} (${website}) and noticed you run a massive catalog on ${platform}.
+
+Managing stock sheets and price updates from multiple manufacturers usually takes hours of manual spreadsheets for your team, and risks costly pricing typos on the store (like accidentally selling items below cost).
+
+I set up a lightweight integration script that automates this. It reads your supplier stock files and updates your ${platform} catalog automatically. It also includes an automatic check to flag pricing typos before they go live.
+
+Would it be alright if I sent over a quick text walkthrough of how we can hook this up to your current supplier feeds to save your team time?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. If you have an IT manager or web developer, you can forward them this simple 60-second system flowchart to show how the database validation works:
+https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png`;
+
+            document.getElementById('pitch-output').textContent = `Subject: ${subject}\n\n${body}`;
+        }
+
+        function copyPitch() {
+            const pitchText = document.getElementById('pitch-output').textContent;
+            navigator.clipboard.writeText(pitchText).then(() => {
+                const btnText = document.getElementById('copy-text');
+                const btnIcon = document.getElementById('copy-icon');
+                
+                btnText.textContent = "Copied to Clipboard!";
+                btnIcon.innerHTML = `<path d="M5 13l4 4L19 7" />`;
+                btnIcon.style.color = "var(--emerald)";
+                
+                setTimeout(() => {
+                    btnText.textContent = "Copy Outreach Draft";
+                    btnIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>`;
+                    btnIcon.style.color = "";
+                }, 2000);
+            }).catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+        }
+
+        // 4. Roadmap Checklist Logic
+        function toggleRoadmapItem(item) {
+            item.classList.toggle('completed');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const items = document.querySelectorAll('.roadmap-item');
+            const completedItems = document.querySelectorAll('.roadmap-item.completed');
+            const percent = Math.round((completedItems.length / items.length) * 100);
+
+            document.getElementById('progress-indicator').style.width = `${percent}%`;
+            document.getElementById('progress-percent').textContent = `${percent}% Completed`;
+        }
+
+        // Initialize values
+        calculateRevenue();
+        updatePitch();
+        updateProgress();
+    </script>
+</body>
+</html>

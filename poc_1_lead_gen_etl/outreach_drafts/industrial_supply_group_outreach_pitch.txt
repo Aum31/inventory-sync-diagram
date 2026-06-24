@@ -1,0 +1,16 @@
+Subject: Quick question about inventory updates for Industrial Supply Group
+
+Hi [Owner / Operations Manager],
+
+I came across Industrial Supply Group (https://www.shopify.com) and noticed you distribute products online. 
+
+I built a lightweight prototype specifically designed for B2B distributors to sync your manufacturer's stock sheets directly to your Shopify Admin API. This updates your Shopify inventory levels automatically in seconds. 
+
+The tool has built-in validation to prevent overselling on Shopify by catching formatting mistakes (like negative prices or missing SKUs) before they publish. This means your team doesn't have to spend hours copy-pasting numbers from manufacturer spreadsheets, and you eliminate the risk of online pricing typos.
+
+I recorded a short 60-second video demo showing how the sync script automatically processes a supplier catalog and handles the updates. Would it be alright if I sent the link over to see if it could save your team some time?
+
+Best regards,
+
+Aum
+Integration Specialist

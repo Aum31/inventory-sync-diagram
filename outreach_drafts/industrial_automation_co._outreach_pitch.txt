@@ -1,0 +1,16 @@
+Subject: Boosting Efficiency for Industrial Automation Co.'s Shopify Catalog
+
+Hi Johnathan,
+
+My name is Aum, an Integration Specialist. I noticed Industrial Automation Co. uses Shopify for your online catalog.
+
+Many businesses like yours face challenges managing inventory across systems, leading to tedious manual work, out-of-stock refund losses, and eroded profit margins. My expertise is in automating these processes, which directly **saves you time, money, and labor** by eliminating manual updates, preventing costly order cancellations, and protecting your profit margins.
+
+Would you be open to a quick 5-minute chat, or even a brief text walkthrough, to see how this could benefit Industrial Automation Co.?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. For your technical team, here's a system architecture flow chart detailing the integration: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

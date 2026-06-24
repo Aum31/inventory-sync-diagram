@@ -1,0 +1,14 @@
+Subject: Inventory updates for ERA ENGINEERING
+
+Hi ERA ENGINEERING team,
+
+Saw your great range of industrial valves, pipes & fittings, and flanges on WooCommerce. Managing inventory for all those parts, especially keeping stock and pricing updated, can be a real headache with manual spreadsheets.
+
+I help businesses like yours automate their product feeds. This means no more copying data, fewer pricing typos, and ultimately **saves your team time, money, and labor**. Imagine your online catalog always being spot-on.
+
+Would you be open to a quick text walkthrough of how we can hook this up to your current feeds?
+
+Cheers,
+Aum
+
+P.S. For your dev or IT manager, here's a quick look at the system architecture: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

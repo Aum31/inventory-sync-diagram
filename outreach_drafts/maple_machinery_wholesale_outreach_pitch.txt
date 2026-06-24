@@ -1,0 +1,16 @@
+Subject: Shopify Inventory: Save Time, Money, Labor
+
+Hi David,
+
+I noticed Maple Machinery Wholesale runs its online catalog on Shopify. As an Integration Specialist, I help businesses like yours automate their inventory management.
+
+Imagine eliminating the tedious manual work of updating stock, drastically reducing refund losses from out-of-stock orders, and protecting your profit margins. My solution is designed to do exactly this, saving you significant time, money, and labor.
+
+Would you be open to a quick 5-minute chat or a text walkthrough to see how this could benefit Maple Machinery?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. For your developer or IT manager, here's a system architecture flow chart for our inventory synchronization solution: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

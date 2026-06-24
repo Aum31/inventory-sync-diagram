@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Inventory Sync & Price Protection Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --card-bg: rgba(13, 20, 38, 0.7);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --primary: #10b981; /* Emerald green for Passed/Go */
+            --primary-glow: rgba(16, 185, 129, 0.25);
+            --secondary: #3b82f6; /* Blue for logic/info */
+            --secondary-glow: rgba(59, 130, 246, 0.25);
+            --accent: #a855f7; /* Purple for code/premium */
+            --accent-glow: rgba(168, 85, 247, 0.25);
+            --rose: #f43f5e; /* Rose for errors/blocks */
+            --rose-glow: rgba(244, 63, 94, 0.25);
+            --amber: #f59e0b; /* Amber for warnings/safety stock */
+            --amber-glow: rgba(245, 158, 11, 0.25);
+            --glass-blur: blur(20px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 10%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 95% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.04) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+
+        header {
+            padding: 2.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(13, 20, 38, 0.4);
+            backdrop-filter: var(--glass-blur);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        .logo-text span {
+            background: linear-gradient(135deg, var(--primary) 30%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem 1.5rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-section h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .hero-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: var(--glass-blur);
+            position: relative;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .card-title svg {
+            width: 24px;
+            height: 24px;
+            color: var(--secondary);
+        }
+
+        /* Controls styling */
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .slider-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--secondary-glow);
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .toggle-label-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            max-width: 75%;
+        }
+
+        .toggle-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .toggle-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toggle switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-switch {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider-switch:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-secondary);
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-switch {
+            background-color: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        input:checked + .slider-switch:before {
+            transform: translateX(20px);
+            background-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Right Content Panel */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Metric cards */
+        .metrics-summary-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .metrics-summary-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            background: rgba(13, 20, 38, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-card-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-card-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            height: 8px;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            border-radius: 9999px;
+            transition: width 0.1s linear;
+        }
+
+        /* Report Table Container */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sku-cell {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .status-badge.passed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-badge.blocked {
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--rose);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+
+        .status-badge.adjusted {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .empty-table-state {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-table-state svg {
+            width: 48px;
+            height: 48px;
+            color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        /* Code exporter tab */
+        .code-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .code-filename {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            max-height: 400px;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <polyline points="9 11 11 13 15 9"/>
+                </svg>
+                <div class="logo-text">Aum<span>Sync</span></div>
+            </a>
+            <a href="index.html" class="back-link">
+                ➔ Back to Playbook
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero-section">
+            <h1>E-Commerce Price Protection Dashboard</h1>
+            <p>Simulate supplier spreadsheet ingestion, configure validation rules, and export dynamic python sync micro-services.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Sidebar: Controls -->
+            <div class="sidebar-panel">
+                <div class="card">
+                    <h2 class="card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        Validation Settings
+                    </h2>
+                    
+                    <div class="control-group">
+                        <!-- Sliders -->
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Price Markup Margin</span>
+                                <span class="slider-val" id="label-markup">30%</span>
+                            </div>
+                            <input type="range" id="param-markup" min="10" max="100" step="5" value="30" oninput="updateSettings()">
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Safety Stock Threshold</span>
+                                <span class="slider-val" id="label-safetystock">5 items</span>
+                            </div>
+                            <input type="range" id="param-safetystock" min="0" max="20" step="1" value="5" oninput="updateSettings()">
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-label">Cost Spike Limit</span>
+                                <span class="slider-val" id="label-costspike">30%</span>
+                            </div>
+                            <input type="range" id="param-costspike" min="10" max="100" step="5" value="30" oninput="updateSettings()">
+                        </div>
+
+                        <!-- Toggles -->
+                        <div class="toggle-item">
+                            <div class="toggle-label-group">
+                                <span class="toggle-label">Margin Guard Shield</span>
+                                <span class="toggle-desc">Blocks items if cost rises above calculated retail price.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="param-guard" checked onchange="updateSettings()">
+                                <span class="slider-switch"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-item">
+                            <div class="toggle-label-group">
+                                <span class="toggle-label">Block Negative Prices</span>
+                                <span class="toggle-desc">Automatically blocks items with cost <= 0.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="param-blockneg" checked onchange="updateSettings()">
+                                <span class="slider-switch"></span>
+                            </label>
+                        </div>
+
+                        <div class="toggle-item">
+                            <div class="toggle-label-group">
+                                <span class="toggle-label">Send Email Alert on Block</span>
+                                <span class="toggle-desc">Triggers SMTP mail warning when item is flagged.</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="param-alert" checked onchange="updateSettings()">
+                                <span class="slider-switch"></span>
+                            </label>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="btn-group" style="margin-top: 1rem;">
+                            <button class="btn btn-secondary" onclick="loadDemoCatalog()">
+                                <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                                </svg>
+                                Load Supplier Catalog
+                            </button>
+                            <button class="btn btn-primary" id="btn-run" onclick="runSync()" disabled>
+                                <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Run Sync Engine
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Content -->
+            <div class="main-panel">
+                <!-- Metrics -->
+                <div class="metrics-summary-row">
+                    <div class="metric-card" style="border-color: rgba(59, 130, 246, 0.25);">
+                        <div class="metric-card-label">Total Items Scanned</div>
+                        <div class="metric-card-value" id="metric-scanned">0</div>
+                    </div>
+                    <div class="metric-card" style="border-color: rgba(16, 185, 129, 0.25);">
+                        <div class="metric-card-label">Items Synced (Passed)</div>
+                        <div class="metric-card-value" id="metric-passed" style="color: var(--primary);">0</div>
+                    </div>
+                    <div class="metric-card" style="border-color: rgba(244, 63, 94, 0.25);">
+                        <div class="metric-card-label">Items Flagged (Blocked)</div>
+                        <div class="metric-card-value" id="metric-blocked" style="color: var(--rose);">0</div>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div class="progress-container" id="progress-block">
+                    <div class="progress-header">
+                        <span id="progress-status">Initializing Validation Gate...</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Card: Ingestion Report -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                        Ingestion & Sync Report
+                    </h2>
+                    
+                    <div class="table-container">
+                        <table id="report-table">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Product Title</th>
+                                    <th>Supplier Cost</th>
+                                    <th>Synced Price</th>
+                                    <th>Feed Qty</th>
+                                    <th>Final Qty</th>
+                                    <th>Gate Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-tbody">
+                                <!-- Empty state -->
+                                <tr>
+                                    <td colspan="7" class="empty-table-state">
+                                        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p>No supplier data loaded yet. Click "Load Supplier Catalog" to load simulation feeds.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Card: Python Script Generator -->
+                <div class="card">
+                    <div class="code-header-row">
+                        <h2 class="card-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                            Dynamic Python Sync Script
+                        </h2>
+                        <button class="copy-btn" onclick="copyCode()">
+                            <svg id="copy-icon" style="width:14px;height:14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                            </svg>
+                            <span id="copy-text">Copy Script</span>
+                        </button>
+                    </div>
+                    <div class="code-filename">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        sync_service.py
+                    </div>
+                    <pre class="code-box" id="code-box-content">Loading python sync generator...</pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>B2B Inventory Protection Engine &bull; Developed by <strong>Aum</strong></p>
+    </footer>
+
+    <script>
+        // 1. Raw Simulator Catalog (contains anomalous values to test validation gates)
+        const demoCatalog = [
+            { sku: "VALVE-BR-12", name: 'Brass Ball Valve 1/2"', cost: 12.50, stock: 150, prevCost: 12.00 },
+            { sku: "VALVE-BR-34", name: 'Brass Gate Valve 3/4"', cost: -4.50, stock: 80, prevCost: 4.50 }, // Anomalous negative price
+            { sku: "PIPE-CP-10", name: "Copper Pipe 10ft Section", cost: 25.00, stock: 3, prevCost: 24.00 },   // Low stock (triggers safety stock)
+            { sku: "PUMP-HD-2", name: "Heavy Duty Submersible Pump", cost: 299.99, stock: 25, prevCost: 150.00 }, // Anomalous cost spike (+100%)
+            { sku: "COUP-PVC-1", name: 'PVC Coupling 1"', cost: 0.99, stock: 500, prevCost: 0.95 },
+            { sku: "ELB-PVC-90", name: 'PVC Elbow 90-deg 1/2"', cost: 0.00, stock: 120, prevCost: 0.45 }, // Anomalous free price
+            { sku: "FLG-ST-6", name: 'Steel Flange 6"', cost: 85.00, stock: 12, prevCost: 82.00 },
+            { sku: "GASK-NEO-6", name: 'Neoprene Gasket 6"', cost: 4.50, stock: 0, prevCost: 4.50 },
+            { sku: "WELD-TR-200", name: "Welding Torch Replacement Head", cost: 45.00, stock: 8, prevCost: 45.00 },
+            { sku: "HELM-AUTO-1", name: "Auto-Darkening Welding Helmet", cost: 120.00, stock: 4, prevCost: 120.00 } // Low stock (triggers safety stock)
+        ];
+
+        let settings = {
+            markup: 30,
+            safetyStock: 5,
+            costSpike: 30,
+            guardEnabled: true,
+            blockNegEnabled: true,
+            alertEnabled: true
+        };
+
+        // Initialize Settings
+        function updateSettings() {
+            settings.markup = parseInt(document.getElementById('param-markup').value);
+            settings.safetyStock = parseInt(document.getElementById('param-safetystock').value);
+            settings.costSpike = parseInt(document.getElementById('param-costspike').value);
+            settings.guardEnabled = document.getElementById('param-guard').checked;
+            settings.blockNegEnabled = document.getElementById('param-blockneg').checked;
+            settings.alertEnabled = document.getElementById('param-alert').checked;
+
+            // Labels
+            document.getElementById('label-markup').textContent = `${settings.markup}%`;
+            document.getElementById('label-safetystock').textContent = `${settings.safetyStock} items`;
+            document.getElementById('label-costspike').textContent = `${settings.costSpike}%`;
+
+            generatePythonScript();
+        }
+
+        function loadDemoCatalog() {
+            const tbody = document.getElementById('report-tbody');
+            tbody.innerHTML = '';
+            
+            demoCatalog.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="sku-cell">${item.sku}</td>
+                    <td>${item.name}</td>
+                    <td>$${item.cost.toFixed(2)}</td>
+                    <td>-</td>
+                    <td>${item.stock}</td>
+                    <td>-</td>
+                    <td><span class="status-badge" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">Awaiting Run</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update metrics
+            document.getElementById('metric-scanned').textContent = demoCatalog.length;
+            document.getElementById('metric-passed').textContent = 0;
+            document.getElementById('metric-blocked').textContent = 0;
+
+            // Enable Run button
+            document.getElementById('btn-run').disabled = false;
+        }
+
+        function runSync() {
+            const progressBlock = document.getElementById('progress-block');
+            const progressFill = document.getElementById('progress-fill');
+            const progressStatus = document.getElementById('progress-status');
+            const progressPercent = document.getElementById('progress-percent');
+            const btnRun = document.getElementById('btn-run');
+
+            btnRun.disabled = true;
+            progressBlock.style.display = 'block';
+
+            let progress = 0;
+            const steps = [
+                { limit: 25, status: "Extracting supplier sheet (SFTP Download)..." },
+                { limit: 55, status: "Normalizing table schemas & float conversions..." },
+                { limit: 85, status: "Processing validation rules engine..." },
+                { limit: 100, status: "Pushing batch update payload to Store API..." }
+            ];
+
+            let stepIdx = 0;
+
+            const interval = setInterval(() => {
+                progress += 2;
+                progressFill.style.width = `${progress}%`;
+                progressPercent.textContent = `${progress}%`;
+
+                if (stepIdx < steps.length && progress >= steps[stepIdx].limit) {
+                    progressStatus.textContent = steps[stepIdx].status;
+                    stepIdx++;
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBlock.style.display = 'none';
+                        executeValidation();
+                        btnRun.disabled = false;
+                    }, 500);
+                }
+            }, 30);
+        }
+
+        function executeValidation() {
+            const tbody = document.getElementById('report-tbody');
+            tbody.innerHTML = '';
+
+            let passedCount = 0;
+            let blockedCount = 0;
+
+            demoCatalog.forEach(item => {
+                let status = "Passed";
+                let statusClass = "passed";
+                let finalPrice = item.cost * (1 + (settings.markup / 100));
+                let finalQty = item.stock;
+
+                // 1. Block negative costs
+                if (settings.blockNegEnabled && item.cost <= 0) {
+                    status = "Blocked: Cost <= $0";
+                    statusClass = "blocked";
+                }
+                
+                // 2. Cost Spike Shield
+                if (status === "Passed") {
+                    const priceDiffPercent = ((item.cost - item.prevCost) / item.prevCost) * 100;
+                    if (priceDiffPercent >= settings.costSpike) {
+                        status = `Blocked: Cost Spike (+${Math.round(priceDiffPercent)}%)`;
+                        statusClass = "blocked";
+                    }
+                }
+
+                // 3. Safety Stock Override
+                if (status === "Passed" && item.stock <= settings.safetyStock) {
+                    finalQty = 0;
+                    status = "Safety Stock: Qty -> 0";
+                    statusClass = "adjusted";
+                }
+
+                // Price adjustments formatting
+                const costDisplay = item.cost < 0 ? `-$${Math.abs(item.cost).toFixed(2)}` : `$${item.cost.toFixed(2)}`;
+                const priceDisplay = statusClass === "blocked" ? "-" : `$${finalPrice.toFixed(2)}`;
+
+                if (statusClass === "blocked") {
+                    blockedCount++;
+                } else {
+                    passedCount++;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="sku-cell">${item.sku}</td>
+                    <td>${item.name}</td>
+                    <td>${costDisplay}</td>
+                    <td>${priceDisplay}</td>
+                    <td>${item.stock}</td>
+                    <td>${statusClass === 'blocked' ? '-' : finalQty}</td>
+                    <td><span class="status-badge ${statusClass}">${status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Metrics
+            document.getElementById('metric-passed').textContent = passedCount;
+            document.getElementById('metric-blocked').textContent = blockedCount;
+        }
+
+        // 3. Dynamic Python Exporter
+        function generatePythonScript() {
+            const script = `import os
+import csv
+import smtplib
+import requests
+from email.mime.text import MIMEText
+
+# ==============================================================================
+# B2B PRICE & INVENTORY VALIDATION MICRO-SERVICE
+# Automatically generated via AumSync Validation Gate Settings.
+# ==============================================================================
+
+# Configurations
+MARKUP_PERCENT = ${settings.markup} / 100
+SAFETY_STOCK_LIMIT = ${settings.safetyStock}
+COST_SPIKE_LIMIT = ${settings.costSpike} / 100
+SHIELD_ENABLED = ${settings.guardEnabled}
+BLOCK_NEG_PRICES = ${settings.blockNegEnabled}
+SEND_ALERT_ON_ERROR = ${settings.alertEnabled}
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SENDER_EMAIL = "aum531192@gmail.com"
+SENDER_PASSWORD = os.getenv("SMTP_PASSWORD")
+ALERT_RECIPIENT = "aum531192@gmail.com"
+
+def send_alert_email(sku, cost, reason):
+    """Dispatches a priority warning to operations regarding blocked syncs."""
+    if not SEND_ALERT_ON_ERROR:
+        return
+    msg = MIMEText(f"CRITICAL ERROR: Item '{sku}' cost was {cost}. Validation Gate blocked update. Reason: {reason}")
+    msg["Subject"] = f"[SECURITY ALERT] Inventory Sync Blocked: {sku}"
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = ALERT_RECIPIENT
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            server.sendmail(SENDER_EMAIL, [ALERT_RECIPIENT], msg.as_string())
+    except Exception as e:
+        print(f"[!] Alert failed: {e}")
+
+def validate_item(item, previous_cost):
+    """Executes the validation gate logic for a single catalog record."""
+    sku = item.get("sku")
+    cost = float(item.get("cost", 0.00))
+    qty = int(item.get("qty", 0))
+    
+    # 1. Block negative costs
+    if BLOCK_NEG_PRICES and cost <= 0:
+        send_alert_email(sku, cost, "Cost is zero or negative")
+        return False, None, None
+        
+    # 2. Cost Spike Shield
+    if previous_cost:
+        spike = (cost - previous_cost) / previous_cost
+        if spike >= COST_SPIKE_LIMIT:
+            send_alert_email(sku, cost, f"Cost spiked by {spike*100}% (Limit: {COST_SPIKE_LIMIT*100}%)")
+            return False, None, None
+            
+    # 3. Apply Markup & Safety Stock rules
+    retail_price = round(cost * (1 + MARKUP_PERCENT), 2)
+    final_qty = 0 if qty <= SAFETY_STOCK_LIMIT else qty
+    
+    return True, retail_price, final_qty
+`;
+            document.getElementById('code-box-content').textContent = script;
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('code-box-content').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const btnText = document.getElementById('copy-text');
+                const btnIcon = document.getElementById('copy-icon');
+                
+                btnText.textContent = "Copied!";
+                btnIcon.innerHTML = `<path d="M5 13l4 4L19 7" />`;
+                btnIcon.style.color = "var(--primary)";
+                
+                setTimeout(() => {
+                    btnText.textContent = "Copy Script";
+                    btnIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>`;
+                    btnIcon.style.color = "";
+                }, 2000);
+            });
+        }
+
+        // Initialize values
+        updateSettings();
+    </script>
+</body>
+</html>

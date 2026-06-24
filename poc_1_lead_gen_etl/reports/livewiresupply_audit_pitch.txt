@@ -1,0 +1,21 @@
+Subject: Quick question about inventory leaks at Livewiresupply
+
+Hi Livewiresupply team,
+
+I was looking at your online catalog on https://livewiresupply.com/ and noticed you sell 20A Double Pole Circuit Breaker and 1/2" EMT Steel Conduit 10ft on WooCommerce. 
+
+I ran a quick price audit of your store against the latest manufacturer price sheets and found two critical discrepancies where catalog update delays are causing issues:
+* On your 12 AWG THHN Copper Wire 500ft, the wholesale cost record has a negative formatting error.
+* On your 5kVA Step Down Transformer, the manufacturer cost rose significantly, but the retail price is out of sync, eroding your gross margin.
+
+Automating these updates directly **saves your team time, money, and labor** by stopping order cancellations and protecting your margins.
+
+I compiled the full PDF audit report. Would it be alright if I sent it over, or shared a quick text walkthrough of how we can automate this to protect your margins?
+
+Best,
+
+Aum
+Integration Specialist
+
+P.S. For your developer or IT manager, here's a system flowchart showing how the price protection gate works:
+https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

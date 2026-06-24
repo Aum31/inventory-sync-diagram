@@ -1,0 +1,32 @@
+{
+    "protocolSection": {
+        "statusModule": {
+            "overallStatus": "RECRUITING"
+        },
+        "sponsorCollaboratorsModule": {
+            "leadSponsor": {
+                "name": "Example Pharma Corp"
+            }
+        },
+        "eligibilityModule": {
+            "minimumAge": "18 Years",
+            "maximumAge": "65 Years"
+        },
+        "outcomesModule": {
+            "primaryOutcomes": [
+                {
+                    "measure": "Overall Survival Rate"
+                },
+                {
+                    "measure": "Incidence of Adverse Events"
+                }
+            ]
+        },
+        "conditionsModule": {
+            "conditions": [
+                "Type 2 Diabetes",
+                "Obesity"
+            ]
+        }
+    }
+}

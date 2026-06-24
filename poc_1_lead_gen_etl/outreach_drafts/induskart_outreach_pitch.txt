@@ -1,0 +1,19 @@
+Subject: Quick question about inventory updates for Induskart
+
+Hi Team,
+
+I came across Induskart (https://www.induskart.co.in) and noticed you run a massive catalog on WooCommerce.
+
+For distributors handling thousands of parts, manually updating stock levels and pricing from supplier sheets is a huge operational bottleneck. I built a lightweight Python integration tool designed specifically to sync your supplier's stock sheets directly to your WooCommerce REST API. It handles the database updates automatically behind the scenes.
+
+The core feature is a "Validation Gate" that checks pricing spikes and SKU anomalies before pushing the data live, ensuring you never display incorrect prices or broken listings.
+
+I've attached a simple flowchart of the system architecture below:
+https://raw.githubusercontent.com/aum-patel/inventory-sync-diagram/main/system_flow.png
+
+Would it be alright if I sent over a short text walkthrough of how we can hook this up to your current supplier feeds, or we could hop on a quick 5-minute call where I can explain the validation logic to your team?
+
+Best regards,
+
+Aum
+Integration Specialist

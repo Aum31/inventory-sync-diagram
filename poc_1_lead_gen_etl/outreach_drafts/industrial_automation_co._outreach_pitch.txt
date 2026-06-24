@@ -1,0 +1,21 @@
+Subject: Quick question about inventory leaks at Industrial Automation Co.
+
+Hi Industrial Automation Co. team,
+
+I was looking at your online catalog on https://industrialautomationco.com and noticed you sell Replacement Fitting 1/2" and Industrial Gasket Pack on Shopify. 
+
+I ran a quick price audit of your store against the latest manufacturer price sheets and found two critical discrepancies where catalog update delays are causing issues:
+* On your Legacy Assembly 3/4", the wholesale cost record has a negative formatting error.
+* On your Heavy Duty Component, the manufacturer cost rose significantly, but the retail price is out of sync, eroding your gross margin.
+
+Automating these updates directly **saves your team time, money, and labor** by stopping order cancellations and protecting your margins.
+
+I compiled the full PDF audit report. Would it be alright if I sent it over, or shared a quick text walkthrough of how we can automate this to protect your margins?
+
+Best,
+
+Aum
+Integration Specialist
+
+P.S. For your developer or IT manager, here's a system flowchart showing how the price protection gate works:
+https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

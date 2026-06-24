@@ -1,0 +1,16 @@
+Subject: Quick question about inventory updates for Dallas Plumbing Wholesalers
+
+Hi [Owner / Operations Manager],
+
+I came across Dallas Plumbing Wholesalers (https://woocommerce.com) and noticed you distribute products online. 
+
+I built a lightweight prototype specifically designed for B2B distributors to sync your supplier's stock sheets directly to your WooCommerce REST API. It handles the database updates automatically behind the scenes. 
+
+The tool has built-in validation to protect your WooCommerce product database from broken supplier listings and stock mismatches automatically. This means your team doesn't have to spend hours copy-pasting numbers from manufacturer spreadsheets, and you eliminate the risk of online pricing typos.
+
+I recorded a short 60-second video demo showing how the sync script automatically processes a supplier catalog and handles the updates. Would it be alright if I sent the link over to see if it could save your team some time?
+
+Best regards,
+
+Aum
+Integration Specialist

@@ -1,0 +1,19 @@
+# IP PATENT CLEARANCE REPORT: ASPIRIN
+--------------------------------------------------
+Report Target: aspirin
+PubChem Compound ID (CID): 2244
+
+## Chemical Structure Details
+*   **IUPAC Name:** 2-acetyloxybenzoic acid
+*   **Molecular Formula:** C9H8O4
+*   **Molecular Weight:** 180.16 g/mol
+*   **SMILES Representation:** CC(=O)OC1=CC=CC=C1C(=O)O
+
+## Intellectual Property (IP) Analysis
+*   **Total Associated Patents Found:** 0
+*   **Clearance Status:** CLEARED (No Patents Found)
+
+## Sample Active Patents (Top 10):
+  - No registered patents found in PubChem database.
+
+--------------------------------------------------

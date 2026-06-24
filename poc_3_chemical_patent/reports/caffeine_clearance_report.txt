@@ -1,0 +1,28 @@
+# IP PATENT CLEARANCE REPORT: CAFFEINE
+--------------------------------------------------
+Report Target: caffeine
+PubChem Compound ID (CID): 2519
+
+## Chemical Structure Details
+*   **IUPAC Name:** 1,3,7-trimethylpurine-2,6-dione
+*   **Molecular Formula:** C8H10N4O2
+*   **Molecular Weight:** 194.19 g/mol
+*   **SMILES Representation:** CN1C=NC2=C1C(=O)N(C(=O)N2C)C
+
+## Intellectual Property (IP) Analysis
+*   **Total Associated Patents Found:** 33291
+*   **Clearance Status:** POTENTIAL CONFLICT (Patented)
+
+## Sample Active Patents (Top 10):
+  - Patent ID: AT-8724-U1
+  - Patent ID: AT-E202449-T1
+  - Patent ID: AT-E376827-T1
+  - Patent ID: AT-E75474-T1
+  - Patent ID: AU-2002230270-B2
+  - Patent ID: AU-2002300579-B2
+  - Patent ID: AU-2002356962-C1
+  - Patent ID: AU-2002363947-A1
+  - Patent ID: AU-2003213495-A1
+  - Patent ID: AU-2003280117-A1
+
+--------------------------------------------------

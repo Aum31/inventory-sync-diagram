@@ -1,0 +1,8 @@
+SKU,Product Name,Price,Stock Quantity,Manufacturer
+COP-PIPE-01,Copper Pipe 1/2 inch x 10ft,15.50,120,Apex Copper Co.
+COP-PIPE-02,Copper Pipe 3/4 inch x 10ft,22.00,85,Apex Copper Co.
+PVC-ELB-90,PVC Elbow 90 Degree 2 inch,1.25,500,Plastix Corp
+PVC-ELB-45,PVC Elbow 45 Degree 2 inch,-0.99,300,Plastix Corp
+VALVE-BALL-1,Brass Ball Valve 1 inch,18.75,,Valves Direct
+VALVE-BALL-2,,12.00,40,Valves Direct
+VALVE-GATE-1,Gate Valve Cast Iron 3 inch,85.00,12,Valves Direct

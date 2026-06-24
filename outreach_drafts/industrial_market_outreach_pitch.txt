@@ -1,0 +1,14 @@
+Subject: Inventory updates for Industrial Market
+
+Hi Industrial Market team,
+
+Noticed your great range of Power Tools, Welding & Soldering equipment, and Electricals on WooCommerce. If you're still manually updating inventory for these, I can help. Automating this process directly saves your team time, money, and labor by eliminating spreadsheet copying and protecting your margins from pricing typos.
+
+Would you be open to a quick text walkthrough of how we can hook this up to your current feeds?
+
+Cheers,
+
+Aum
+Integration Specialist
+
+P.S. For your dev/IT folks, here's a system architecture flow: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

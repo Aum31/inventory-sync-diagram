@@ -1,0 +1,18 @@
+Subject: Streamlining Inventory for Apex Hydraulics UK
+
+Hi William,
+
+I'm Aum, an Integration Specialist. I noticed Apex Hydraulics UK uses WooCommerce for your online catalog.
+
+Many businesses like yours face challenges keeping their online inventory perfectly synced with their physical stock. This often leads to tedious manual updates, costly out-of-stock refunds, and lost profit margins.
+
+My focus is on automating this process to directly save you significant **time, money, and labor**. By eliminating manual work and reducing refund losses, you protect your profit margins and improve customer satisfaction.
+
+Would you be open to a quick 5-minute chat or a text walkthrough to see how this could benefit Apex Hydraulics UK?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. For your technical team, here's a system architecture flow chart for how this integration works: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

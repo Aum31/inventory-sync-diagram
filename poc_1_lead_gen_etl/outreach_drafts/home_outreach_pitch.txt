@@ -1,0 +1,19 @@
+Subject: Quick question about inventory updates for Home
+
+Hi Team,
+
+I came across Home (https://atlas-lenco.com/) and noticed you run a massive catalog on WooCommerce.
+
+Managing price sheets and stock levels from multiple manufacturers usually takes hours of manual spreadsheets for your team, and risks costly pricing typos on the store. 
+
+I set up a lightweight integration script that automates this. It reads your supplier stock files and updates your WooCommerce catalog automatically. It also includes an automatic check to flag pricing typos (like accidentally selling items below cost) before they go live.
+
+Would it be alright if I sent over a quick text walkthrough of how we can hook this up to your current supplier feeds to save your team time?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. If you have an IT manager or web developer, you can forward them this simple 60-second system flowchart to show how the database validation works:
+https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

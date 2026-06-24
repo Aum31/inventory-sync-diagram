@@ -1,0 +1,12 @@
+Subject: 3tenplumbing inventory updates
+
+Hi 3tenplumbing team,
+
+Saw your WooCommerce store and thought about how much work goes into keeping inventory accurate for items like water heaters, pipes, or those nice new faucets. I help businesses automate inventory updates directly from suppliers. This cuts out manual spreadsheet copying and protects your margins from pricing typos, which ultimately **saves your team time, money, and labor**.
+
+Would you be open to a quick text walkthrough of how we can hook this up to your current feeds?
+
+Best,
+Aum, Integration Specialist
+
+P.S. For your dev/IT manager, here's a system architecture flow: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

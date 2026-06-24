@@ -1,0 +1,16 @@
+Subject: Automate Weldingmart's Shopify Inventory & Save
+
+Hi Team,
+
+My name is Aum, an Integration Specialist. I noticed Weldingmart runs its online catalog on Shopify.
+
+Many businesses like yours spend significant time on manual inventory updates, leading to costly out-of-stock refunds and lost profit margins. I specialize in automating these processes, which directly **saves you time, money, and labor** by eliminating tedious manual work and protecting your profit margins from order cancellations.
+
+Would you be open to a quick 5-minute chat or a brief text walkthrough to see how this could benefit Weldingmart?
+
+Best regards,
+
+Aum
+Integration Specialist
+
+P.S. For your technical team, here's a system architecture flow chart detailing the integration: https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriceShield AI - Automated Margin & Inventory Protection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --card-bg: rgba(13, 18, 33, 0.7);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #2dd4bf;
+            --primary-glow: rgba(45, 212, 191, 0.25);
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.25);
+            --emerald: #10b981;
+            --rose: #f43f5e;
+            --glass-blur: blur(20px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 85% 85%, rgba(45, 212, 191, 0.12) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #ffffff;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 50%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+        }
+
+        .badge-status {
+            background: rgba(45, 212, 191, 0.1);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 6rem 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        /* Interactive Demo Grid */
+        .demo-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 32px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: var(--glass-blur);
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        @media (max-width: 992px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .demo-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Left Side: Shopify Mockup */
+        .shopify-panel {
+            background: #0f1422;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .shopify-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #95bf47; /* Shopify green */
+        }
+
+        .store-status {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .store-status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--emerald);
+        }
+
+        /* Product Card Mockup */
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            padding: 1.5rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .product-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #ffffff;
+        }
+
+        .product-sku {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .product-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .metric-box-lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-box-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .metric-box-val.alert {
+            color: var(--rose);
+        }
+
+        .metric-box-val.success {
+            color: var(--emerald);
+        }
+
+        .margin-indicator {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .margin-lbl {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .margin-val {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--emerald);
+            transition: color 0.3s;
+        }
+
+        .margin-val.negative {
+            color: var(--rose);
+        }
+
+        /* Right Side: Supplier Drop Portal */
+        .portal-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .portal-title-row {
+            margin-bottom: 0.5rem;
+        }
+
+        .portal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .portal-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .dropzone {
+            border: 2px dashed rgba(99, 102, 241, 0.3);
+            background: rgba(99, 102, 241, 0.02);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .dropzone:hover {
+            border-color: var(--primary);
+            background: rgba(45, 212, 191, 0.02);
+            box-shadow: 0 0 25px rgba(45, 212, 191, 0.05);
+        }
+
+        .dropzone-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .dropzone:hover .dropzone-icon {
+            background: rgba(45, 212, 191, 0.1);
+            border-color: rgba(45, 212, 191, 0.2);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .dropzone-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .dropzone-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .dropzone-subtext {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+            border: none;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 1.1rem 2rem;
+            border-radius: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px var(--accent-glow);
+            background: linear-gradient(135deg, #7c3aed 0%, var(--accent) 100%);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Shield Notification Overlay */
+        .shield-status-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 10, 19, 0.9);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+        }
+
+        .shield-status-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .shield-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(45, 212, 191, 0.1);
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 30px var(--primary-glow);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .shield-status-overlay.active .shield-circle {
+            transform: scale(1);
+        }
+
+        .shield-circle svg {
+            width: 40px;
+            height: 40px;
+            color: var(--primary);
+        }
+
+        .shield-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .shield-msg {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+            max-width: 280px;
+            margin-bottom: 1.5rem;
+        }
+
+        .shield-dismiss-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .shield-dismiss-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Business Value Cards */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .value-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .value-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .value-icon.purple {
+            color: #a855f7;
+        }
+
+        .value-icon.blue {
+            color: #3b82f6;
+        }
+
+        .value-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .value-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .value-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Call to Action Box */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(45, 212, 191, 0.03) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 28px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .cta-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            font-size: 1.05rem;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #0d9488 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 1.1rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(45, 212, 191, 0.3);
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(45, 212, 191, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 6rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <span class="logo-text">PriceShield</span>
+        </div>
+        <div class="badge-status">
+            Live Simulator
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Title -->
+        <section class="hero-section">
+            <div class="hero-badge">
+                <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+                </svg>
+                Protect Your Store Margins Automatically
+            </div>
+            <h1>Stop Selling at a Loss Due to Supplier Price Lags</h1>
+            <p class="hero-desc">When manufacturers change wholesale costs, manual copy-pasting takes too long. Our PriceShield gate automatically audits, validates, and syncs your store catalog to safeguard your profits.</p>
+        </section>
+
+        <!-- Interactive Demo Container -->
+        <section class="demo-container">
+            <div class="demo-grid">
+                
+                <!-- Left Side: Live Store Mockup -->
+                <div class="shopify-panel">
+                    <!-- Overlay for Shield Active notification -->
+                    <div class="shield-status-overlay" id="shield-overlay">
+                        <div class="shield-circle">
+                            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div class="shield-title">Shield Activated</div>
+                        <div class="shield-msg" id="shield-alert-text">Cost spike detected (+77%). Retail price adjusted automatically to safeguard your 30% margin.</div>
+                        <button class="shield-dismiss-btn" onclick="dismissOverlay()">Dismiss Alert</button>
+                    </div>
+
+                    <div class="panel-header">
+                        <span class="shopify-badge">
+                            <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.5 3c-.5-.3-1.1-.3-1.6 0L12 6.6 6.1 3c-.5-.3-1.1-.3-1.6 0-.5.3-.8.8-.8 1.4v13.2c0 .6.3 1.1.8 1.4L12 22.6l7.5-4.6c.5-.3.8-.8.8-1.4V4.4c0-.6-.3-1.1-.8-1.4z"/>
+                            </svg>
+                            Shopify Storefront
+                        </span>
+                        <div class="store-status">
+                            <div class="store-status-dot"></div>
+                            <span>PriceShield Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Product Mockup Card -->
+                    <div class="product-card" id="demo-product-card">
+                        <div class="product-title-row">
+                            <div>
+                                <div class="product-title">Auto-Darkening Welding Helmet</div>
+                                <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">Niche: Welding Equipment</div>
+                            </div>
+                            <span class="product-sku" id="prod-sku">HELM-AUTO-12</span>
+                        </div>
+
+                        <div class="product-metrics">
+                            <div class="metric-box">
+                                <div class="metric-box-lbl">Retail Price</div>
+                                <div class="metric-box-val success" id="retail-display">$143.00</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-box-lbl">Wholesale Cost</div>
+                                <div class="metric-box-val" id="cost-display">$110.00</div>
+                            </div>
+                        </div>
+
+                        <div class="margin-indicator">
+                            <span class="margin-lbl">Your Gross Margin</span>
+                            <span class="margin-val" id="margin-display">23.1% ($33.00)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Supplier Portal -->
+                <div class="portal-panel">
+                    <div class="portal-title-row">
+                        <div class="portal-title">Supplier Price Sheet</div>
+                        <p class="portal-desc">Simulate dropping a new manufacturer price list containing wholesale cost updates. Watch how PriceShield protects your store instantly.</p>
+                    </div>
+
+                    <!-- Interactive Drag/Drop Zone -->
+                    <div class="dropzone" id="dropzone-area" onclick="triggerSimulation()">
+                        <div class="dropzone-icon">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                        </div>
+                        <div class="dropzone-text" id="dropzone-txt">Click to Drop Supplier Price Sheet</div>
+                        <div class="dropzone-subtext">Simulate Daily Manufacturer Cost Spike Update</div>
+                    </div>
+
+                    <button class="action-btn" onclick="triggerSimulation()">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Run Margin Protection Test
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- The 3 Pillars of Business Value -->
+        <section class="value-grid">
+            <!-- Pillar 1: Time -->
+            <div class="value-card">
+                <div class="value-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="value-title">Saves Time</div>
+                <div class="value-desc">No more manual copy-pasting. The script automatically reads your supplier spreadsheets, sanitizes the formatting, and updates your store catalog in the background every hour.</div>
+            </div>
+
+            <!-- Pillar 2: Money -->
+            <div class="value-card">
+                <div class="value-icon purple">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="value-title">Safeguards Money</div>
+                <div class="value-desc">Stops pricing bugs and cost leaks before they go live. If a supplier raises a wholesale cost above your retail price, the gate automatically flags it, preventing transactions at a net loss.</div>
+            </div>
+
+            <!-- Pillar 3: Labor -->
+            <div class="value-card">
+                <div class="value-icon blue">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="value-title">Eliminates Labor Errors</div>
+                <div class="value-desc">Quarantines bad data. Automatically intercepts human formatting typos (like missing fields or negative supplier costs) and prevents out-of-stock orders by syncing inventory levels in real-time.</div>
+            </div>
+        </section>
+
+        <!-- Closing CTA Box -->
+        <section class="cta-box">
+            <h2 class="cta-title">Get a Free Catalog Leak Audit</h2>
+            <p class="cta-desc">We build custom, private integration scripts tailored to your specific supplier file formats. Send us a message for a free catalog audit—we will check your store for pricing leaks and show you exactly how to automate it.</p>
+            <a href="mailto:aum531192@gmail.com" class="cta-btn">
+                <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Request Free Catalog Audit
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PriceShield. Managed integrations for Shopify & WooCommerce.</p>
+    </footer>
+
+    <script>
+        let demoState = 0; // 0 = Healthy, 1 = Cost Spiked, 2 = Shield Protected
+
+        function triggerSimulation() {
+            const retailVal = document.getElementById('retail-display');
+            const costVal = document.getElementById('cost-display');
+            const marginVal = document.getElementById('margin-display');
+            const dropTxt = document.getElementById('dropzone-txt');
+            const overlay = document.getElementById('shield-overlay');
+            const productCard = document.getElementById('demo-product-card');
+
+            if (demoState === 0) {
+                // Step 1: Simulate the Cost Spike (The Pain)
+                dropTxt.textContent = "CSV Ingested: Cost Spike Detected!";
+                dropTxt.style.color = "var(--rose)";
+                document.getElementById('dropzone-area').style.borderColor = "var(--rose)";
+                
+                costVal.textContent = "$195.00";
+                costVal.classList.add('alert');
+                
+                // Margins collapse
+                marginVal.textContent = "-36.3% (-$52.00)";
+                marginVal.className = "margin-val negative";
+                
+                productCard.style.borderColor = "rgba(244, 63, 94, 0.4)";
+                productCard.style.boxShadow = "0 0 20px rgba(244, 63, 94, 0.1)";
+                
+                demoState = 1;
+
+                // Automatically trigger the shield protection after 2 seconds to show the solution
+                setTimeout(() => {
+                    triggerShield();
+                }, 2000);
+            } else if (demoState === 2) {
+                // Reset back to healthy
+                resetDemo();
+            }
+        }
+
+        function triggerShield() {
+            const retailVal = document.getElementById('retail-display');
+            const marginVal = document.getElementById('margin-display');
+            const overlay = document.getElementById('shield-overlay');
+            const productCard = document.getElementById('demo-product-card');
+            const costVal = document.getElementById('cost-display');
+
+            // Adjust retail price automatically to safeguard 30% margin ($253.50)
+            retailVal.textContent = "$253.50";
+            retailVal.classList.add('success');
+            
+            marginVal.textContent = "23.1% ($58.50)";
+            marginVal.className = "margin-val";
+            
+            productCard.style.borderColor = "rgba(45, 212, 191, 0.4)";
+            productCard.style.boxShadow = "0 0 25px rgba(45, 212, 191, 0.15)";
+            
+            // Show shield overlay
+            overlay.classList.add('active');
+            
+            demoState = 2;
+        }
+
+        function dismissOverlay() {
+            const overlay = document.getElementById('shield-overlay');
+            overlay.classList.remove('active');
+            
+            const dropTxt = document.getElementById('dropzone-txt');
+            dropTxt.textContent = "Click to Reset Simulator";
+            dropTxt.style.color = "var(--primary)";
+            document.getElementById('dropzone-area').style.borderColor = "var(--primary)";
+        }
+
+        function resetDemo() {
+            const retailVal = document.getElementById('retail-display');
+            const costVal = document.getElementById('cost-display');
+            const marginVal = document.getElementById('margin-display');
+            const dropTxt = document.getElementById('dropzone-txt');
+            const productCard = document.getElementById('demo-product-card');
+
+            retailVal.textContent = "$143.00";
+            retailVal.className = "metric-box-val success";
+            
+            costVal.textContent = "$110.00";
+            costVal.className = "metric-box-val";
+            
+            marginVal.textContent = "23.1% ($33.00)";
+            marginVal.className = "margin-val";
+            
+            productCard.style.borderColor = "rgba(255, 255, 255, 0.04)";
+            productCard.style.boxShadow = "none";
+
+            dropTxt.textContent = "Click to Drop Supplier Price Sheet";
+            dropTxt.style.color = "";
+            document.getElementById('dropzone-area').style.borderColor = "rgba(99, 102, 241, 0.3)";
+            
+            demoState = 0;
+        }
+    </script>
+</body>
+</html>

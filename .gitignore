@@ -11,3 +11,6 @@ poc_1_lead_gen_etl/.env
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Ignored sub-folders
+inventory-sync-diagram/

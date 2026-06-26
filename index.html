@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PriceShield AI - Automated Margin & Inventory Protection</title>
+    <title>PriceShield — Automated Margin & Catalog Protection</title>
+    <meta name="description" content="Protect your e-commerce margins automatically. PriceShield intercepts supplier cost sheets, detects price spikes, and updates your storefront in real-time.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #070a13;
-            --card-bg: rgba(13, 18, 33, 0.7);
-            --border-color: rgba(255, 255, 255, 0.06);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --primary: #2dd4bf;
-            --primary-glow: rgba(45, 212, 191, 0.25);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.25);
-            --emerald: #10b981;
-            --rose: #f43f5e;
-            --glass-blur: blur(20px);
+            --paper: #FAF8F5;
+            --paper-warm: #F4F1EC;
+            --ink: #1A1A1A;
+            --ink-soft: #4A4A4A;
+            --ink-faint: #8A8A8A;
+            --shield-green: #52E011;
+            --shield-green-glow: rgba(82, 224, 17, 0.15);
+            --rose: #FF3B5F;
+            --rose-glow: rgba(255, 59, 95, 0.1);
+            --border-color: rgba(26, 26, 26, 0.08);
+            --border-hover: rgba(26, 26, 26, 0.15);
+            --shadow-soft: 0 20px 40px -20px rgba(26, 26, 26, 0.06);
+            --shadow-deep: 0 30px 60px -30px rgba(26, 26, 26, 0.12);
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -29,894 +32,1413 @@
             padding: 0;
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
+        html, body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: 'Albert Sans', sans-serif;
             min-height: 100vh;
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 85% 85%, rgba(45, 212, 191, 0.12) 0%, transparent 50%);
-            background-attachment: fixed;
+            scroll-behavior: smooth;
         }
 
-        header {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 10;
+        /* Premium Paper Noise Texture Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.15 0 0 0 0 0.15 0 0 0 0.02 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+            mix-blend-mode: multiply;
+            opacity: 0.65;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 12px;
+        /* Fixed Side Rails (Rotated typography) */
+        .side-rail {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 44px;
+            z-index: 100;
+            pointer-events: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            transition: var(--transition-smooth);
         }
 
-        .logo-icon svg {
-            width: 22px;
-            height: 22px;
-            color: #ffffff;
+        .side-rail.left {
+            left: 0;
+            border-right: 1px solid var(--border-color);
         }
 
-        .logo-text {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 50%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.03em;
+        .side-rail.right {
+            right: 0;
+            border-left: 1px solid var(--border-color);
         }
 
-        .badge-status {
-            background: rgba(45, 212, 191, 0.1);
-            border: 1px solid rgba(45, 212, 191, 0.2);
-            color: var(--primary);
-            padding: 0.4rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.85rem;
+        .side-rail .rail-text {
+            font-size: 9px;
             font-weight: 600;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.42em;
             text-transform: uppercase;
+            color: var(--ink-faint);
+            writing-mode: vertical-rl;
+            white-space: nowrap;
         }
 
+        .side-rail.left .rail-text {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 1080px) {
+            .side-rail {
+                display: none;
+            }
+        }
+
+        /* Sticky Navigation Header (Condenses on Scroll) */
+        header.site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: transparent;
+            transition: var(--transition-smooth);
+            padding: 24px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            transition: var(--transition-smooth);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--paper);
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .brand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        nav.header-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav.header-nav a {
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        nav.header-nav a:hover {
+            color: var(--ink);
+        }
+
+        nav.header-nav a.nav-cta {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        nav.header-nav a.nav-cta:hover {
+            background: var(--ink-soft);
+            transform: translateY(-1px);
+        }
+
+        /* Scrolling Condensed State */
+        header.site-header.is-condensed {
+            padding: 12px 0;
+        }
+
+        header.site-header.is-condensed .header-container {
+            max-width: 900px;
+            background: rgba(250, 248, 245, 0.75);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 10px 28px;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(12px) saturate(1.4);
+            -webkit-backdrop-filter: blur(12px) saturate(1.4);
+        }
+
+        header.site-header.is-condensed .brand-icon {
+            background: var(--shield-green);
+            color: var(--ink);
+        }
+
+        /* Main Container Layout */
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 1.5rem 6rem 1.5rem;
-            position: relative;
-            z-index: 10;
+            padding: 140px 40px 80px 40px;
         }
 
-        .hero-section {
+        /* Hero Section */
+        .hero {
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto 4rem auto;
+            max-width: 760px;
+            margin: 0 auto 80px auto;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.03);
+            gap: 8px;
+            background: var(--paper-warm);
             border: 1px solid var(--border-color);
-            padding: 0.5rem 1.25rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            backdrop-filter: var(--glass-blur);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ink-soft);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--shield-green);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--shield-green);
         }
 
         h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.25rem;
+            font-weight: 700;
             line-height: 1.15;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
+            color: var(--ink);
+            margin-bottom: 20px;
         }
 
         .hero-desc {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
+            font-size: 1.15rem;
+            color: var(--ink-soft);
+            max-width: 680px;
+            margin: 0 auto;
             font-weight: 400;
+            line-height: 1.6;
         }
 
-        /* Interactive Demo Grid */
-        .demo-container {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 32px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            backdrop-filter: var(--glass-blur);
-            margin-bottom: 4rem;
-            position: relative;
-            overflow: hidden;
+        /* Interactive Showcase Section */
+        .showcase-container {
+            margin-bottom: 100px;
+        }
+
+        .showcase-title-row {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .showcase-title-row h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .showcase-title-row p {
+            color: var(--ink-faint);
+            font-size: 0.95rem;
         }
 
         .demo-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 5;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: start;
         }
 
-        @media (max-width: 992px) {
+        @media (max-width: 960px) {
             .demo-grid {
                 grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-            .demo-container {
-                padding: 2rem 1.5rem;
+                gap: 48px;
             }
         }
 
-        /* Left Side: Shopify Mockup */
-        .shopify-panel {
-            background: #0f1422;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.4);
-            position: relative;
+        /* Left Panel: Visualizer Mockup */
+        .visualizer-panel {
+            position: sticky;
+            top: 100px;
+            background: var(--paper-warm);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 1.25rem;
-            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
         }
 
-        .shopify-badge {
+        .storefront-title {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-family: 'Outfit', sans-serif;
+            gap: 8px;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 1.05rem;
-            color: #95bf47; /* Shopify green */
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink-soft);
         }
 
-        .store-status {
-            display: flex;
+        .system-status-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.3rem 0.75rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 6px;
+            background: rgba(26, 26, 26, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
         }
 
-        .store-status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--emerald);
+        .system-status-badge .badge-dot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--emerald);
+            background: var(--ink-faint);
+            transition: var(--transition-smooth);
         }
 
-        /* Product Card Mockup */
-        .product-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 18px;
-            padding: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Active Badge States */
+        .system-status-badge.state-healthy {
+            background: rgba(82, 224, 17, 0.08);
+            border-color: rgba(82, 224, 17, 0.15);
+            color: #2E8A00;
+        }
+        .system-status-badge.state-healthy .badge-dot {
+            background: var(--shield-green);
+            box-shadow: 0 0 6px var(--shield-green);
         }
 
-        .product-title-row {
+        .system-status-badge.state-warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.2);
+            color: #B45309;
+        }
+        .system-status-badge.state-warning .badge-dot {
+            background: #F59E0B;
+            box-shadow: 0 0 6px #F59E0B;
+        }
+
+        .system-status-badge.state-leak {
+            background: rgba(255, 59, 95, 0.08);
+            border-color: rgba(255, 59, 95, 0.15);
+            color: #C10022;
+            animation: pulse-border 2s infinite;
+        }
+        .system-status-badge.state-leak .badge-dot {
+            background: var(--rose);
+            box-shadow: 0 0 6px var(--rose);
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        .system-status-badge.state-shield {
+            background: rgba(82, 224, 17, 0.12);
+            border-color: rgba(82, 224, 17, 0.25);
+            color: #246B00;
+        }
+        .system-status-badge.state-shield .badge-dot {
+            background: var(--shield-green);
+            box-shadow: 0 0 10px var(--shield-green);
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes pulse-border {
+            0% { border-color: rgba(255, 59, 95, 0.15); }
+            50% { border-color: rgba(255, 59, 95, 0.4); }
+            100% { border-color: rgba(255, 59, 95, 0.15); }
+        }
+
+        /* Catalog Card Mockup */
+        .catalog-card {
+            background: var(--paper);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalog-card.card-warning {
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 15px 35px -15px rgba(245, 158, 11, 0.1);
+        }
+
+        .catalog-card.card-danger {
+            border-color: rgba(255, 59, 95, 0.3);
+            box-shadow: 0 15px 35px -15px rgba(255, 59, 95, 0.15);
+        }
+
+        .catalog-card.card-shield {
+            border-color: rgba(82, 224, 17, 0.3);
+            box-shadow: 0 15px 35px -15px rgba(82, 224, 17, 0.15);
+        }
+
+        .card-title-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
 
-        .product-title {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #ffffff;
+        .product-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .product-meta {
+            font-size: 11px;
+            color: var(--ink-faint);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .product-sku {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+            font-size: 11px;
             font-family: monospace;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.2rem 0.5rem;
+            background: var(--paper-warm);
+            border: 1px solid var(--border-color);
+            padding: 2px 8px;
             border-radius: 4px;
+            color: var(--ink-soft);
         }
 
-        .product-metrics {
+        /* Metrics Display Grid */
+        .card-metrics {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
-        .metric-box {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.02);
+        .metric-tile {
+            background: var(--paper-warm);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1rem;
-            position: relative;
+            padding: 16px;
+            transition: var(--transition-smooth);
         }
 
-        .metric-box-lbl {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+        .metric-tile-label {
+            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            margin-bottom: 6px;
         }
 
-        .metric-box-val {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem;
+        .metric-tile-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
             font-weight: 700;
-            color: #ffffff;
-            transition: color 0.3s, transform 0.3s;
+            color: var(--ink);
+            transition: var(--transition-smooth);
         }
 
-        .metric-box-val.alert {
+        .metric-tile-value.alert-red {
             color: var(--rose);
         }
 
-        .metric-box-val.success {
-            color: var(--emerald);
+        .metric-tile-value.alert-green {
+            color: #246B00;
         }
 
-        .margin-indicator {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        .margin-banner {
+            background: var(--paper-warm);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 0.75rem 1rem;
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: var(--transition-smooth);
         }
 
         .margin-lbl {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink-soft);
         }
 
         .margin-val {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--emerald);
-            transition: color 0.3s;
+            font-size: 18px;
+            color: #2E8A00;
+            transition: var(--transition-smooth);
+        }
+
+        .margin-val.amber {
+            color: #B45309;
         }
 
         .margin-val.negative {
             color: var(--rose);
         }
 
-        /* Right Side: Supplier Drop Portal */
-        .portal-panel {
+        /* Order Feed Notification Overlay */
+        .order-notification {
+            position: absolute;
+            bottom: -80px;
+            left: 20px;
+            right: 20px;
+            background: var(--ink);
+            color: var(--paper);
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-deep);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .order-notification.active {
+            transform: translateY(-100px);
+            opacity: 1;
+        }
+
+        .order-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .order-margin-alert {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .order-margin-alert.leak {
+            background: var(--rose);
+            color: var(--paper);
+        }
+
+        .order-margin-alert.healthy {
+            background: var(--shield-green);
+            color: var(--ink);
+        }
+
+        /* Action Alert Banner under Card */
+        .status-explanation-banner {
+            margin-top: 20px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid transparent;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-explanation-banner.state-0 {
+            background: rgba(26, 26, 26, 0.02);
+            border-color: var(--border-color);
+            color: var(--ink-soft);
+        }
+
+        .status-explanation-banner.state-1 {
+            background: rgba(245, 158, 11, 0.04);
+            border-color: rgba(245, 158, 11, 0.15);
+            color: #8A4F00;
+        }
+
+        .status-explanation-banner.state-2 {
+            background: rgba(255, 59, 95, 0.04);
+            border-color: rgba(255, 59, 95, 0.15);
+            color: #C10022;
+        }
+
+        .status-explanation-banner.state-3 {
+            background: rgba(82, 224, 17, 0.06);
+            border-color: rgba(82, 224, 17, 0.2);
+            color: #246B00;
+        }
+
+        /* Right Panel: Storytelling Steps */
+        .storytelling-panel {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 24px;
         }
 
-        .portal-title-row {
-            margin-bottom: 0.5rem;
-        }
-
-        .portal-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .portal-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .dropzone {
-            border: 2px dashed rgba(99, 102, 241, 0.3);
-            background: rgba(99, 102, 241, 0.02);
-            border-radius: 24px;
-            padding: 3rem 2rem;
-            text-align: center;
+        .story-step {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-smooth);
             position: relative;
         }
 
-        .dropzone:hover {
-            border-color: var(--primary);
-            background: rgba(45, 212, 191, 0.02);
-            box-shadow: 0 0 25px rgba(45, 212, 191, 0.05);
+        .story-step:hover {
+            border-color: var(--border-hover);
+            background: rgba(26, 26, 26, 0.01);
         }
 
-        .dropzone-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem auto;
-            color: var(--text-secondary);
-            transition: all 0.3s;
+        .story-step.active {
+            border-color: var(--ink);
+            background: var(--paper);
+            box-shadow: var(--shadow-soft);
         }
 
-        .dropzone:hover .dropzone-icon {
-            background: rgba(45, 212, 191, 0.1);
-            border-color: rgba(45, 212, 191, 0.2);
-            color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .dropzone-icon svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        .dropzone-text {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .dropzone-subtext {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
-            border: none;
-            color: #ffffff;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 1.05rem;
-            padding: 1.1rem 2rem;
-            border-radius: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            box-shadow: 0 8px 25px var(--accent-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px var(--accent-glow);
-            background: linear-gradient(135deg, #7c3aed 0%, var(--accent) 100%);
-        }
-
-        .action-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Shield Notification Overlay */
-        .shield-status-overlay {
+        .story-step.active::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(7, 10, 19, 0.9);
-            border-radius: 24px;
+            left: -1px;
+            top: 20px;
+            bottom: 20px;
+            width: 3px;
+            background: var(--ink);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .story-step.active.shield-active::after {
+            background: var(--shield-green);
+        }
+        .story-step.active.shield-active {
+            border-color: var(--shield-green);
+            box-shadow: 0 15px 35px -15px rgba(82, 224, 17, 0.12);
+        }
+
+        .step-num-row {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-            z-index: 10;
-            backdrop-filter: blur(8px);
+            margin-bottom: 12px;
         }
 
-        .shield-status-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .shield-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(45, 212, 191, 0.1);
-            border: 2px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 0 30px var(--primary-glow);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .shield-status-overlay.active .shield-circle {
-            transform: scale(1);
-        }
-
-        .shield-circle svg {
-            width: 40px;
-            height: 40px;
-            color: var(--primary);
-        }
-
-        .shield-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .shield-msg {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            text-align: center;
-            max-width: 280px;
-            margin-bottom: 1.5rem;
-        }
-
-        .shield-dismiss-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 0.85rem;
+        .step-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
             font-weight: 600;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
+            color: var(--ink-faint);
+            letter-spacing: 0.1em;
+        }
+
+        .story-step.active .step-number {
+            color: var(--ink-soft);
+        }
+
+        .step-type-pill {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(26, 26, 26, 0.05);
+            color: var(--ink-soft);
+        }
+
+        .story-step.active .step-type-pill.type-danger {
+            background: rgba(255, 59, 95, 0.1);
+            color: var(--rose);
+        }
+
+        .story-step.active .step-type-pill.type-shield {
+            background: rgba(82, 224, 17, 0.15);
+            color: #2E8A00;
+        }
+
+        .step-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .step-explanation {
+            font-size: 13px;
+            color: var(--ink-soft);
+            margin-bottom: 14px;
+            display: none;
+            transition: var(--transition-smooth);
+        }
+
+        .story-step.active .step-explanation {
+            display: block;
+        }
+
+        .step-role-box {
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .story-step.active .step-role-box {
+            display: block;
+        }
+
+        .role-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            margin-bottom: 4px;
+        }
+
+        .role-desc {
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        /* Timeline Navigation buttons */
+        .timeline-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0 4px;
+        }
+
+        .next-step-btn {
+            background: var(--ink);
+            border: none;
+            color: var(--paper);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 12px 24px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .shield-dismiss-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .next-step-btn:hover {
+            background: var(--ink-soft);
+            transform: translateY(-1px);
         }
 
-        /* Business Value Cards */
+        .autoplay-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--ink-soft);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .autoplay-btn:hover {
+            border-color: var(--ink-soft);
+            color: var(--ink);
+        }
+
+        .autoplay-btn.is-playing {
+            background: rgba(82, 224, 17, 0.08);
+            border-color: rgba(82, 224, 17, 0.2);
+            color: #2E8A00;
+        }
+
+        /* Business Value Grid Section */
+        .value-section {
+            margin-bottom: 100px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 48px auto;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            color: var(--ink);
+        }
+
+        .section-header p {
+            color: var(--ink-soft);
+            font-size: 0.95rem;
+        }
+
         .value-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-bottom: 4rem;
+            gap: 32px;
         }
 
         @media (max-width: 768px) {
             .value-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 24px;
             }
         }
 
         .value-card {
-            background: var(--card-bg);
+            background: var(--paper);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: var(--glass-blur);
-            transition: all 0.3s;
+            padding: 32px;
+            transition: var(--transition-smooth);
         }
 
         .value-card:hover {
-            border-color: rgba(255, 255, 255, 0.12);
-            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-soft);
         }
 
         .value-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.03);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--paper-warm);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
+            color: var(--ink);
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
         }
 
-        .value-icon.purple {
-            color: #a855f7;
+        .value-card:hover .value-icon {
+            background: var(--ink);
+            color: var(--paper);
         }
 
-        .value-icon.blue {
-            color: #3b82f6;
-        }
-
-        .value-icon svg {
-            width: 22px;
-            height: 22px;
+        .value-card:hover .value-icon.icon-green {
+            background: var(--shield-green);
+            color: var(--ink);
+            border-color: rgba(82, 224, 17, 0.2);
         }
 
         .value-title {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 1.25rem;
-            color: #ffffff;
-            margin-bottom: 0.75rem;
+            font-size: 16px;
+            color: var(--ink);
+            margin-bottom: 10px;
         }
 
         .value-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
+            color: var(--ink-soft);
+            font-size: 13px;
+            line-height: 1.6;
         }
 
-        /* Call to Action Box */
+        /* Closing CTA Box Section */
+        .cta-section {
+            margin-bottom: 60px;
+        }
+
         .cta-box {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(45, 212, 191, 0.03) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: var(--ink);
+            color: var(--paper);
             border-radius: 28px;
-            padding: 3.5rem 2rem;
+            padding: 64px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--shadow-deep);
+        }
+
+        /* Subtle neon light ray inside dark CTA box */
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(82, 224, 17, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .cta-title {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 2.25rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
             letter-spacing: -0.02em;
         }
 
         .cta-desc {
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-            font-size: 1.05rem;
+            color: var(--ink-faint);
+            max-width: 580px;
+            margin: 0 auto 32px auto;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         .cta-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #0d9488 100%);
-            color: #ffffff;
+            gap: 8px;
+            background: var(--shield-green);
+            color: var(--ink);
             text-decoration: none;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 1.1rem;
-            padding: 1.1rem 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(45, 212, 191, 0.3);
-            transition: all 0.3s;
+            font-size: 14px;
+            padding: 14px 32px;
+            border-radius: 999px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 25px rgba(82, 224, 17, 0.2);
         }
 
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(45, 212, 191, 0.4);
+            box-shadow: 0 15px 30px rgba(82, 224, 17, 0.3);
+            background: #63ff13;
         }
 
+        /* Footer */
         footer {
-            text-align: center;
-            padding: 4rem 1.5rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 40px;
             border-top: 1px solid var(--border-color);
-            background: rgba(0, 0, 0, 0.2);
-            margin-top: 6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--ink-faint);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            footer {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        footer p {
+            font-weight: 500;
+        }
+
+        footer a {
+            color: var(--ink-faint);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        footer a:hover {
+            color: var(--ink);
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <div class="logo-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-            </div>
-            <span class="logo-text">PriceShield</span>
-        </div>
-        <div class="badge-status">
-            Live Simulator
+    <!-- Pinned Side Rails (Open Design layout) -->
+    <div class="side-rail left">
+        <span class="rail-text">PRICESHIELD MARGIN AUTOMATION</span>
+    </div>
+    <div class="side-rail right">
+        <span class="rail-text">LIVE CATALOG SIMULATOR</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="site-header" id="main-header">
+        <div class="header-container">
+            <a href="#" class="brand">
+                <div class="brand-icon">P</div>
+                <span class="brand-name">PriceShield</span>
+            </a>
+            <nav class="header-nav">
+                <a href="#demo-section">Interactive Demo</a>
+                <a href="#value-section">How We Help</a>
+                <a href="mailto:aum531192@gmail.com" class="nav-cta">Request Free Audit</a>
+            </nav>
         </div>
     </header>
 
     <main>
-        <!-- Hero Title -->
-        <section class="hero-section">
+        <!-- Hero Section -->
+        <section class="hero">
             <div class="hero-badge">
-                <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-                </svg>
-                Protect Your Store Margins Automatically
+                <span class="status-dot"></span>
+                Profit Protection Gate
             </div>
             <h1>Stop Selling at a Loss Due to Supplier Price Lags</h1>
-            <p class="hero-desc">When manufacturers change wholesale costs, manual copy-pasting takes too long. Our PriceShield gate automatically audits, validates, and syncs your store catalog to safeguard your profits.</p>
+            <p class="hero-desc">Wholesale costs change constantly. If you are copying manufacturer sheets manually, your retail prices lag behind. PriceShield intercepts supplier files, sanitizes errors, and secures your profits automatically.</p>
         </section>
 
-        <!-- Interactive Demo Container -->
-        <section class="demo-container">
-            <div class="demo-grid">
-                
-                <!-- Left Side: Live Store Mockup -->
-                <div class="shopify-panel">
-                    <!-- Overlay for Shield Active notification -->
-                    <div class="shield-status-overlay" id="shield-overlay">
-                        <div class="shield-circle">
-                            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
-                        </div>
-                        <div class="shield-title">Shield Activated</div>
-                        <div class="shield-msg" id="shield-alert-text">Cost spike detected (+77%). Retail price adjusted automatically to safeguard your 30% margin.</div>
-                        <button class="shield-dismiss-btn" onclick="dismissOverlay()">Dismiss Alert</button>
-                    </div>
+        <!-- Interactive Showcase (Recreated Demo) -->
+        <section class="showcase-container" id="demo-section">
+            <div class="showcase-title-row">
+                <h2>Interactive Margin Leak Simulator</h2>
+                <p>Click the steps below to witness the silent leak in action and see how we intercept it.</p>
+            </div>
 
+            <div class="demo-grid">
+                <!-- Left Column: Visualizer Mockup -->
+                <div class="visualizer-panel">
                     <div class="panel-header">
-                        <span class="shopify-badge">
-                            <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="currentColor">
+                        <span class="storefront-title">
+                            <svg style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
                                 <path d="M19.5 3c-.5-.3-1.1-.3-1.6 0L12 6.6 6.1 3c-.5-.3-1.1-.3-1.6 0-.5.3-.8.8-.8 1.4v13.2c0 .6.3 1.1.8 1.4L12 22.6l7.5-4.6c.5-.3.8-.8.8-1.4V4.4c0-.6-.3-1.1-.8-1.4z"/>
                             </svg>
                             Shopify Storefront
                         </span>
-                        <div class="store-status">
-                            <div class="store-status-dot"></div>
-                            <span>PriceShield Active</span>
+                        <div class="system-status-badge state-healthy" id="system-status">
+                            <span class="badge-dot"></span>
+                            <span id="system-status-text">System Normal</span>
                         </div>
                     </div>
 
-                    <!-- Product Mockup Card -->
-                    <div class="product-card" id="demo-product-card">
-                        <div class="product-title-row">
+                    <!-- Shopify Catalog Card -->
+                    <div class="catalog-card" id="catalog-card">
+                        <!-- Order feed banner that slides in -->
+                        <div class="order-notification" id="order-banner">
+                            <span class="order-text" id="order-banner-text">Incoming customer order: SKU AUTO-12</span>
+                            <span class="order-margin-alert healthy" id="order-margin-badge">Order Margins Safe</span>
+                        </div>
+
+                        <div class="card-title-row">
                             <div>
-                                <div class="product-title">Auto-Darkening Welding Helmet</div>
-                                <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">Niche: Welding Equipment</div>
+                                <div class="product-name">Auto-Darkening Welding Helmet</div>
+                                <div class="product-meta">Niche: Industrial Equipment</div>
                             </div>
-                            <span class="product-sku" id="prod-sku">HELM-AUTO-12</span>
+                            <span class="product-sku">SKU: AUTO-12</span>
                         </div>
 
-                        <div class="product-metrics">
-                            <div class="metric-box">
-                                <div class="metric-box-lbl">Retail Price</div>
-                                <div class="metric-box-val success" id="retail-display">$143.00</div>
+                        <div class="card-metrics">
+                            <div class="metric-tile">
+                                <div class="metric-tile-label">Retail Price</div>
+                                <div class="metric-tile-value" id="retail-price-val">$140.00</div>
                             </div>
-                            <div class="metric-box">
-                                <div class="metric-box-lbl">Wholesale Cost</div>
-                                <div class="metric-box-val" id="cost-display">$110.00</div>
+                            <div class="metric-tile">
+                                <div class="metric-tile-label">Wholesale Cost</div>
+                                <div class="metric-tile-value" id="wholesale-cost-val">$100.00</div>
                             </div>
                         </div>
 
-                        <div class="margin-indicator">
+                        <div class="margin-banner" id="margin-banner">
                             <span class="margin-lbl">Your Gross Margin</span>
-                            <span class="margin-val" id="margin-display">23.1% ($33.00)</span>
+                            <span class="margin-val" id="margin-percentage-val">28.5% ($40.00)</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right Side: Supplier Portal -->
-                <div class="portal-panel">
-                    <div class="portal-title-row">
-                        <div class="portal-title">Supplier Price Sheet</div>
-                        <p class="portal-desc">Simulate dropping a new manufacturer price list containing wholesale cost updates. Watch how PriceShield protects your store instantly.</p>
-                    </div>
-
-                    <!-- Interactive Drag/Drop Zone -->
-                    <div class="dropzone" id="dropzone-area" onclick="triggerSimulation()">
-                        <div class="dropzone-icon">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                            </svg>
-                        </div>
-                        <div class="dropzone-text" id="dropzone-txt">Click to Drop Supplier Price Sheet</div>
-                        <div class="dropzone-subtext">Simulate Daily Manufacturer Cost Spike Update</div>
-                    </div>
-
-                    <button class="action-btn" onclick="triggerSimulation()">
-                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    <!-- System Action Banner -->
+                    <div class="status-explanation-banner state-0" id="status-explanation">
+                        <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
                         </svg>
-                        Run Margin Protection Test
-                    </button>
+                        <span id="explanation-text">Monitoring baseline catalog. Wholesale cost and retail price are in sync.</span>
+                    </div>
                 </div>
 
+                <!-- Right Column: Scenario Timeline -->
+                <div class="storytelling-panel">
+                    <!-- Step 1 -->
+                    <div class="story-step active" id="step-card-0" onclick="setStep(0)">
+                        <div class="step-num-row">
+                            <span class="step-number">STEP 01</span>
+                            <span class="step-type-pill">Baseline</span>
+                        </div>
+                        <h3 class="step-title">Standard Healthy Catalog</h3>
+                        <p class="step-explanation">The storefront runs under standard conditions. The product is priced at $140.00 against a wholesale cost of $100.00, returning a healthy profit margin of 28.5% per sale.</p>
+                        <div class="step-role-box">
+                            <div class="role-label">Our Baseline Configuration</div>
+                            <div class="role-desc">We map the supplier's cost sheet fields and establish a clean connection to your Shopify catalog.</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="story-step" id="step-card-1" onclick="setStep(1)">
+                        <div class="step-num-row">
+                            <span class="step-number">STEP 02</span>
+                            <span class="step-type-pill type-danger">Cost Hike</span>
+                        </div>
+                        <h3 class="step-title">Manufacturer Cost Increase</h3>
+                        <p class="step-explanation">The manufacturer issues a new wholesale price list, raising the cost from $100.00 to $130.00. Because the price sheet hasn't been manually processed yet, the storefront price remains at $140.00, degrading profit margins down to a critical 7.1%.</p>
+                        <div class="step-role-box">
+                            <div class="role-label">What We Detect</div>
+                            <div class="role-desc">Our validation worker parses the incoming cost sheet and instantly flags the margin breach in the background.</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="story-step" id="step-card-2" onclick="setStep(2)">
+                        <div class="step-num-row">
+                            <span class="step-number">STEP 03</span>
+                            <span class="step-type-pill type-danger">Margin Leak</span>
+                        </div>
+                        <h3 class="step-title">The Silent Margin Leak</h3>
+                        <p class="step-explanation">The wholesale cost spikes further to $150.00 (surpassing the retail price). A customer places an order. Since the site is not updated, the transaction completes at the old $140.00 price, causing an active net loss of -$10.00 per order. Your store is paying to ship products.</p>
+                        <div class="step-role-box">
+                            <div class="role-label">The Risk We Eliminate</div>
+                            <div class="role-desc">Without automation, this leak goes unnoticed until the end of the month. We intercept this before the financial damage occurs.</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="story-step shield-active" id="step-card-3" onclick="setStep(3)">
+                        <div class="step-num-row">
+                            <span class="step-number">STEP 04</span>
+                            <span class="step-type-pill type-shield">PriceShield</span>
+                        </div>
+                        <h3 class="step-title">PriceShield Safeguard</h3>
+                        <p class="step-explanation">The validation gate intercepts the cost change, applies the configured margin rule, and pushes an instant catalog update. The retail price is automatically adjusted to $214.30 on Shopify, securing a healthy 30.0% margin.</p>
+                        <div class="step-role-box">
+                            <div class="role-label">Automated Remediation</div>
+                            <div class="role-desc">Retail prices are recalculated and updated in real-time, blocking the margin leak instantly and securing your store cash flow.</div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation and Autoplay -->
+                    <div class="timeline-actions">
+                        <button class="autoplay-btn" id="autoplay-btn" onclick="toggleAutoplay()">
+                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>Auto-Play Scenario</span>
+                        </button>
+                        <button class="next-step-btn" id="next-step-btn" onclick="nextStep()">
+                            <span>Next Scenario Step</span>
+                            <svg style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- The 3 Pillars of Business Value -->
-        <section class="value-grid">
-            <!-- Pillar 1: Time -->
-            <div class="value-card">
-                <div class="value-icon">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div class="value-title">Saves Time</div>
-                <div class="value-desc">No more manual copy-pasting. The script automatically reads your supplier spreadsheets, sanitizes the formatting, and updates your store catalog in the background every hour.</div>
+        <!-- Business Value Section -->
+        <section class="value-section" id="value-section">
+            <div class="section-header">
+                <h2>Why E-Commerce Stores Automate with Us</h2>
+                <p>We build tailored pricing and inventory pipelines that run silently in the background, keeping your store protected.</p>
             </div>
 
-            <!-- Pillar 2: Money -->
-            <div class="value-card">
-                <div class="value-icon purple">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+            <div class="value-grid">
+                <!-- Card 1 -->
+                <div class="value-card">
+                    <div class="value-icon icon-green">
+                        <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="value-title">Automatic Margin Safeguards</h3>
+                    <p class="value-desc">Prevent selling at a loss. The integration script tracks manufacturer changes hourly and automatically quarantines products that fail your target margin rules, blocking transaction leaks.</p>
                 </div>
-                <div class="value-title">Safeguards Money</div>
-                <div class="value-desc">Stops pricing bugs and cost leaks before they go live. If a supplier raises a wholesale cost above your retail price, the gate automatically flags it, preventing transactions at a net loss.</div>
-            </div>
 
-            <!-- Pillar 3: Labor -->
-            <div class="value-card">
-                <div class="value-icon blue">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                    </svg>
+                <!-- Card 2 -->
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="value-title">Hours of Manual Labor Eliminated</h3>
+                    <p class="value-desc">No more manual copy-pasting spreadsheet rows, formatting columns, or uploading CSV files. The background worker parses raw manufacturer feeds and updates Shopify automatically.</p>
                 </div>
-                <div class="value-title">Eliminates Labor Errors</div>
-                <div class="value-desc">Quarantines bad data. Automatically intercepts human formatting typos (like missing fields or negative supplier costs) and prevents out-of-stock orders by syncing inventory levels in real-time.</div>
+
+                <!-- Card 3 -->
+                <div class="value-card">
+                    <div class="value-icon">
+                        <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="value-title">Data Ingestion Sanitization</h3>
+                    <p class="value-desc">Manufacturer files are often messy. Our custom pipelines clean bad text formats, handle currency symbols, and quarantine formatting typos before they go live on your storefront.</p>
+                </div>
             </div>
         </section>
 
-        <!-- Closing CTA Box -->
-        <section class="cta-box">
-            <h2 class="cta-title">Get a Free Catalog Leak Audit</h2>
-            <p class="cta-desc">We build custom, private integration scripts tailored to your specific supplier file formats. Send us a message for a free catalog audit—we will check your store for pricing leaks and show you exactly how to automate it.</p>
-            <a href="mailto:aum531192@gmail.com" class="cta-btn">
-                <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                Request Free Catalog Audit
-            </a>
+        <!-- Call to Action Box Section -->
+        <section class="cta-section" id="audit-section">
+            <div class="cta-box">
+                <h2 class="cta-title">Get a Free Pricing & Catalog Audit</h2>
+                <p class="cta-desc">We write custom, private automation scripts tailored to your specific suppliers. Send us an email with your supplier formats, and we will analyze your catalog for margin leaks and map out an automation pipeline for free.</p>
+                <a href="mailto:aum531192@gmail.com?subject=PriceShield - Free Store Catalog Audit" class="cta-btn">
+                    <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Request Free Catalog Audit
+                </a>
+            </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 PriceShield. Managed integrations for Shopify & WooCommerce.</p>
+        <p>&copy; 2026 PriceShield. Bespoke catalog automation for Shopify & WooCommerce.</p>
+        <p><a href="mailto:aum531192@gmail.com">Contact Integrations Engineer</a></p>
     </footer>
 
+    <!-- Interactive Simulation & Scroll Script -->
     <script>
-        let demoState = 0; // 0 = Healthy, 1 = Cost Spiked, 2 = Shield Protected
+        // Condensed navigation header effect on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 40) {
+                header.classList.add('is-condensed');
+            } else {
+                header.classList.remove('is-condensed');
+            }
+        });
 
-        function triggerSimulation() {
-            const retailVal = document.getElementById('retail-display');
-            const costVal = document.getElementById('cost-display');
-            const marginVal = document.getElementById('margin-display');
-            const dropTxt = document.getElementById('dropzone-txt');
-            const overlay = document.getElementById('shield-overlay');
-            const productCard = document.getElementById('demo-product-card');
+        // Scenario Interactivity State Engine
+        let currentStep = 0;
+        let autoplayInterval = null;
 
-            if (demoState === 0) {
-                // Step 1: Simulate the Cost Spike (The Pain)
-                dropTxt.textContent = "CSV Ingested: Cost Spike Detected!";
-                dropTxt.style.color = "var(--rose)";
-                document.getElementById('dropzone-area').style.borderColor = "var(--rose)";
-                
-                costVal.textContent = "$195.00";
-                costVal.classList.add('alert');
-                
-                // Margins collapse
-                marginVal.textContent = "-36.3% (-$52.00)";
-                marginVal.className = "margin-val negative";
-                
-                productCard.style.borderColor = "rgba(244, 63, 94, 0.4)";
-                productCard.style.boxShadow = "0 0 20px rgba(244, 63, 94, 0.1)";
-                
-                demoState = 1;
+        // Scenario state values
+        const states = [
+            {
+                retail: "$140.00",
+                cost: "$100.00",
+                profit: "+$40.00",
+                margin: "28.5% ($40.00)",
+                marginClass: "margin-val",
+                retailClass: "metric-tile-value",
+                costClass: "metric-tile-value",
+                statusClass: "system-status-badge state-healthy",
+                statusText: "System Normal",
+                explanation: "Monitoring baseline catalog. Wholesale cost and retail price are in sync.",
+                explanationClass: "status-explanation-banner state-0",
+                orderActive: false,
+                orderText: "",
+                orderMarginClass: ""
+            },
+            {
+                retail: "$140.00",
+                cost: "$130.00",
+                profit: "+$10.00",
+                margin: "7.1% ($10.00)",
+                marginClass: "margin-val amber",
+                retailClass: "metric-tile-value",
+                costClass: "metric-tile-value alert-red",
+                statusClass: "system-status-badge state-warning",
+                statusText: "Margin Warning",
+                explanation: "Supplier raised cost to $130. Margin degraded to 7.1%. Price sync lag active.",
+                explanationClass: "status-explanation-banner state-1",
+                orderActive: false,
+                orderText: "",
+                orderMarginClass: ""
+            },
+            {
+                retail: "$140.00",
+                cost: "$150.00",
+                profit: "-$10.00",
+                margin: "-7.1% (-$10.00)",
+                marginClass: "margin-val negative",
+                retailClass: "metric-tile-value",
+                costClass: "metric-tile-value alert-red",
+                statusClass: "system-status-badge state-leak",
+                statusText: "Margin Leak Detected",
+                explanation: "Wholesale cost ($150) exceeds retail ($140). Catalog leaking cash.",
+                explanationClass: "status-explanation-banner state-2",
+                orderActive: true,
+                orderText: "Incoming Order: Net Profit -$10.00",
+                orderMarginClass: "order-margin-alert leak",
+                orderMarginText: "Loss Incurred"
+            },
+            {
+                retail: "$214.30",
+                cost: "$150.00",
+                profit: "+$64.30",
+                margin: "30.0% ($64.30)",
+                marginClass: "margin-val",
+                retailClass: "metric-tile-value alert-green",
+                costClass: "metric-tile-value",
+                statusClass: "system-status-badge state-shield",
+                statusText: "PriceShield Protected",
+                explanation: "PriceShield intercepted price list. Retail updated to secure 30% margin.",
+                explanationClass: "status-explanation-banner state-3",
+                orderActive: true,
+                orderText: "Incoming Order: Net Profit +$64.30",
+                orderMarginClass: "order-margin-alert healthy",
+                orderMarginText: "Margin Secured"
+            }
+        ];
 
-                // Automatically trigger the shield protection after 2 seconds to show the solution
-                setTimeout(() => {
-                    triggerShield();
-                }, 2000);
-            } else if (demoState === 2) {
-                // Reset back to healthy
-                resetDemo();
+        function setStep(stepIndex) {
+            currentStep = stepIndex;
+            updateVisualizer();
+            updateTimelineUI();
+        }
+
+        function updateVisualizer() {
+            const state = states[currentStep];
+            
+            // Update Text Values
+            document.getElementById('retail-price-val').textContent = state.retail;
+            document.getElementById('wholesale-cost-val').textContent = state.cost;
+            document.getElementById('margin-percentage-val').textContent = state.margin;
+            document.getElementById('system-status-text').textContent = state.statusText;
+            document.getElementById('explanation-text').textContent = state.explanation;
+
+            // Update CSS Classes
+            document.getElementById('retail-price-val').className = state.retailClass;
+            document.getElementById('wholesale-cost-val').className = state.costClass;
+            document.getElementById('margin-percentage-val').className = state.marginClass;
+            document.getElementById('system-status').className = state.statusClass;
+            document.getElementById('status-explanation').className = state.explanationClass;
+
+            // Update Card Border State
+            const card = document.getElementById('catalog-card');
+            card.className = "catalog-card";
+            if (currentStep === 1) card.classList.add('card-warning');
+            if (currentStep === 2) card.classList.add('card-danger');
+            if (currentStep === 3) card.classList.add('card-shield');
+
+            // Update Order Notification Feed Banner
+            const orderBanner = document.getElementById('order-banner');
+            if (state.orderActive) {
+                document.getElementById('order-banner-text').textContent = state.orderText;
+                const badge = document.getElementById('order-margin-badge');
+                badge.className = state.orderMarginClass;
+                badge.textContent = state.orderMarginText;
+                orderBanner.classList.add('active');
+            } else {
+                orderBanner.classList.remove('active');
             }
         }
 
-        function triggerShield() {
-            const retailVal = document.getElementById('retail-display');
-            const marginVal = document.getElementById('margin-display');
-            const overlay = document.getElementById('shield-overlay');
-            const productCard = document.getElementById('demo-product-card');
-            const costVal = document.getElementById('cost-display');
+        function updateTimelineUI() {
+            // Update Active Card Class
+            for (let i = 0; i < 4; i++) {
+                const card = document.getElementById(`step-card-${i}`);
+                if (i === currentStep) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            }
 
-            // Adjust retail price automatically to safeguard 30% margin ($253.50)
-            retailVal.textContent = "$253.50";
-            retailVal.classList.add('success');
-            
-            marginVal.textContent = "23.1% ($58.50)";
-            marginVal.className = "margin-val";
-            
-            productCard.style.borderColor = "rgba(45, 212, 191, 0.4)";
-            productCard.style.boxShadow = "0 0 25px rgba(45, 212, 191, 0.15)";
-            
-            // Show shield overlay
-            overlay.classList.add('active');
-            
-            demoState = 2;
+            // Update Next button text
+            const btn = document.getElementById('next-step-btn').querySelector('span');
+            if (currentStep === 3) {
+                btn.textContent = "Restart Scenario";
+            } else {
+                btn.textContent = "Next Scenario Step";
+            }
         }
 
-        function dismissOverlay() {
-            const overlay = document.getElementById('shield-overlay');
-            overlay.classList.remove('active');
-            
-            const dropTxt = document.getElementById('dropzone-txt');
-            dropTxt.textContent = "Click to Reset Simulator";
-            dropTxt.style.color = "var(--primary)";
-            document.getElementById('dropzone-area').style.borderColor = "var(--primary)";
+        function nextStep() {
+            let next = currentStep + 1;
+            if (next > 3) next = 0;
+            setStep(next);
         }
 
-        function resetDemo() {
-            const retailVal = document.getElementById('retail-display');
-            const costVal = document.getElementById('cost-display');
-            const marginVal = document.getElementById('margin-display');
-            const dropTxt = document.getElementById('dropzone-txt');
-            const productCard = document.getElementById('demo-product-card');
+        // Autoplay Simulation Scenario
+        function toggleAutoplay() {
+            const btn = document.getElementById('autoplay-btn');
+            const icon = btn.querySelector('svg');
+            const label = btn.querySelector('span');
 
-            retailVal.textContent = "$143.00";
-            retailVal.className = "metric-box-val success";
-            
-            costVal.textContent = "$110.00";
-            costVal.className = "metric-box-val";
-            
-            marginVal.textContent = "23.1% ($33.00)";
-            marginVal.className = "margin-val";
-            
-            productCard.style.borderColor = "rgba(255, 255, 255, 0.04)";
-            productCard.style.boxShadow = "none";
-
-            dropTxt.textContent = "Click to Drop Supplier Price Sheet";
-            dropTxt.style.color = "";
-            document.getElementById('dropzone-area').style.borderColor = "rgba(99, 102, 241, 0.3)";
-            
-            demoState = 0;
+            if (autoplayInterval) {
+                // Stop Autoplay
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+                btn.classList.remove('is-playing');
+                label.textContent = "Auto-Play Scenario";
+                icon.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play glyph
+            } else {
+                // Start Autoplay
+                btn.classList.add('is-playing');
+                label.textContent = "Pause Scenario";
+                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Pause glyph
+                
+                // Set interval to step through every 4.5 seconds
+                autoplayInterval = setInterval(function() {
+                    nextStep();
+                }, 4500);
+            }
         }
+
+        // Initialize visualizer state on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            updateVisualizer();
+            updateTimelineUI();
+        });
     </script>
 </body>
 </html>

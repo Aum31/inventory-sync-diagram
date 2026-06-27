@@ -10,20 +10,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --paper: #FAF8F5;
-            --paper-warm: #F4F1EC;
-            --ink: #1A1A1A;
-            --ink-soft: #4A4A4A;
-            --ink-faint: #8A8A8A;
-            --shield-green: #52E011;
-            --shield-green-glow: rgba(82, 224, 17, 0.15);
-            --rose: #FF3B5F;
-            --rose-glow: rgba(255, 59, 95, 0.1);
-            --border-color: rgba(26, 26, 26, 0.08);
-            --border-hover: rgba(26, 26, 26, 0.15);
-            --shadow-soft: 0 20px 40px -20px rgba(26, 26, 26, 0.06);
-            --shadow-deep: 0 30px 60px -30px rgba(26, 26, 26, 0.12);
-            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --bg-dark: #07090E;
+            --bg-darker: #040508;
+            --card-bg: rgba(11, 15, 26, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+            --primary: #06B6D4; /* Cyan */
+            --primary-glow: rgba(6, 182, 212, 0.25);
+            --emerald: #10B981; /* Green */
+            --emerald-glow: rgba(16, 185, 129, 0.2);
+            --amber: #F59E0B; /* Warning */
+            --amber-glow: rgba(245, 158, 11, 0.2);
+            --rose: #F43F5E; /* Loss */
+            --rose-glow: rgba(244, 63, 94, 0.2);
+            --glass-blur: blur(20px);
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -33,8 +37,8 @@
         }
 
         html, body {
-            background-color: var(--paper);
-            color: var(--ink);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
             font-family: 'Albert Sans', sans-serif;
             min-height: 100vh;
             line-height: 1.6;
@@ -42,16 +46,62 @@
             scroll-behavior: smooth;
         }
 
-        /* Premium Paper Noise Texture Overlay */
-        body::before {
-            content: '';
+        /* Tech-Grid Background Overlay */
+        .bg-grid {
             position: fixed;
             inset: 0;
+            z-index: 1;
             pointer-events: none;
-            z-index: 9999;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.15 0 0 0 0 0.15 0 0 0 0.02 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-            mix-blend-mode: multiply;
-            opacity: 0.65;
+            opacity: 0.15;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Floating Colorful Blurs (Matter/Open-Design concept) */
+        .blur-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.25;
+            animation: float-around 20s infinite ease-in-out alternate;
+        }
+
+        .blob-cyan {
+            width: 350px;
+            height: 350px;
+            background: var(--primary);
+            top: 15%;
+            left: 10%;
+        }
+
+        .blob-purple {
+            width: 400px;
+            height: 400px;
+            background: #8B5CF6;
+            bottom: 10%;
+            right: 15%;
+            animation-duration: 25s;
+        }
+
+        .blob-green {
+            width: 300px;
+            height: 300px;
+            background: var(--emerald);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 18s;
+            opacity: 0.15;
+        }
+
+        @keyframes float-around {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -50px) scale(1.1); }
+            100% { transform: translate(-30px, 40px) scale(0.9); }
         }
 
         /* Fixed Side Rails (Rotated typography) */
@@ -83,7 +133,7 @@
             font-weight: 600;
             letter-spacing: 0.42em;
             text-transform: uppercase;
-            color: var(--ink-faint);
+            color: var(--text-muted);
             writing-mode: vertical-rl;
             white-space: nowrap;
         }
@@ -93,12 +143,10 @@
         }
 
         @media (max-width: 1080px) {
-            .side-rail {
-                display: none;
-            }
+            .side-rail { display: none; }
         }
 
-        /* Sticky Navigation Header (Condenses on Scroll) */
+        /* Glass Header (Condenses on scroll) */
         header.site-header {
             position: fixed;
             top: 0;
@@ -126,21 +174,21 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            color: var(--ink);
+            color: var(--text-primary);
         }
 
         .brand-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
-            background: var(--ink);
+            background: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--paper);
+            color: var(--bg-darker);
             font-weight: 700;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             transition: var(--transition-smooth);
         }
 
@@ -158,7 +206,7 @@
         }
 
         nav.header-nav a {
-            color: var(--ink-soft);
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -166,12 +214,12 @@
         }
 
         nav.header-nav a:hover {
-            color: var(--ink);
+            color: var(--text-primary);
         }
 
         nav.header-nav a.nav-cta {
-            background: var(--ink);
-            color: var(--paper);
+            background: var(--text-primary);
+            color: var(--bg-darker);
             padding: 8px 18px;
             border-radius: 999px;
             font-weight: 600;
@@ -179,29 +227,29 @@
         }
 
         nav.header-nav a.nav-cta:hover {
-            background: var(--ink-soft);
+            opacity: 0.9;
             transform: translateY(-1px);
         }
 
-        /* Scrolling Condensed State */
+        /* Condensed state on scroll */
         header.site-header.is-condensed {
             padding: 12px 0;
         }
 
         header.site-header.is-condensed .header-container {
             max-width: 900px;
-            background: rgba(250, 248, 245, 0.75);
+            background: rgba(11, 15, 26, 0.7);
             border: 1px solid var(--border-color);
             border-radius: 999px;
             padding: 10px 28px;
-            box-shadow: var(--shadow-soft);
-            backdrop-filter: blur(12px) saturate(1.4);
-            -webkit-backdrop-filter: blur(12px) saturate(1.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
         }
 
         header.site-header.is-condensed .brand-icon {
-            background: var(--shield-green);
-            color: var(--ink);
+            background: var(--primary);
+            color: var(--bg-darker);
         }
 
         /* Main Container Layout */
@@ -209,6 +257,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 140px 40px 80px 40px;
+            position: relative;
+            z-index: 10;
         }
 
         /* Hero Section */
@@ -222,7 +272,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--paper-warm);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
             padding: 6px 16px;
             border-radius: 999px;
@@ -230,85 +280,329 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--ink-soft);
+            color: var(--primary);
             margin-bottom: 24px;
         }
 
         .hero-badge .status-dot {
             width: 6px;
             height: 6px;
-            background-color: var(--shield-green);
+            background-color: var(--primary);
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 8px var(--shield-green);
+            box-shadow: 0 0 8px var(--primary);
         }
 
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.25rem;
+            font-size: 3.5rem;
             font-weight: 700;
             line-height: 1.15;
             letter-spacing: -0.03em;
-            color: var(--ink);
+            color: var(--text-primary);
             margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 40%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-desc {
             font-size: 1.15rem;
-            color: var(--ink-soft);
+            color: var(--text-secondary);
             max-width: 680px;
             margin: 0 auto;
             font-weight: 400;
             line-height: 1.6;
         }
 
-        /* Interactive Showcase Section */
-        .showcase-container {
-            margin-bottom: 100px;
+        /* Visual Stepper Timeline Header */
+        .stepper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px 40px;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            position: relative;
         }
 
-        .showcase-title-row {
-            text-align: center;
-            margin-bottom: 48px;
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            z-index: 10;
         }
 
-        .showcase-title-row h2 {
+        /* Connecting timeline bar */
+        .stepper-bar-fill {
+            position: absolute;
+            top: 34px;
+            left: 12.5%;
+            right: 12.5%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            z-index: 5;
+        }
+
+        .stepper-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-darker);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 12px;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
         }
 
-        .showcase-title-row p {
-            color: var(--ink-faint);
-            font-size: 0.95rem;
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: var(--transition-smooth);
         }
 
-        .demo-grid {
+        /* Active Stepper Classes */
+        .step-indicator.active .step-circle {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+            transform: scale(1.1);
+        }
+
+        .step-indicator.active .step-label {
+            color: var(--text-primary);
+        }
+
+        .step-indicator.active.healthy .step-circle {
+            border-color: var(--emerald);
+            color: var(--emerald);
+            box-shadow: 0 0 10px var(--emerald-glow);
+        }
+        .step-indicator.active.healthy .step-label {
+            color: var(--emerald);
+        }
+
+        .step-indicator.active.warning .step-circle {
+            border-color: var(--amber);
+            color: var(--amber);
+            box-shadow: 0 0 10px var(--amber-glow);
+        }
+        .step-indicator.active.warning .step-label {
+            color: var(--amber);
+        }
+
+        .step-indicator.active.danger .step-circle {
+            border-color: var(--rose);
+            color: var(--rose);
+            box-shadow: 0 0 10px var(--rose-glow);
+        }
+        .step-indicator.active.danger .step-label {
+            color: var(--rose);
+        }
+
+        /* Split Showcase Grid */
+        .showcase-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            margin-bottom: 80px;
+        }
+
+        .showcase-grid {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            gap: 60px;
+            gap: 40px;
             align-items: start;
         }
 
-        @media (max-width: 960px) {
-            .demo-grid {
+        @media (max-width: 990px) {
+            .showcase-grid {
                 grid-template-columns: 1fr;
-                gap: 48px;
+                gap: 40px;
             }
         }
 
-        /* Left Panel: Visualizer Mockup */
-        .visualizer-panel {
-            position: sticky;
-            top: 100px;
-            background: var(--paper-warm);
+        /* Left Column: Flowchart & Pipeline Animation */
+        .pipeline-card {
+            background: rgba(4, 5, 8, 0.4);
             border: 1px solid var(--border-color);
-            border-radius: 28px;
-            padding: 32px;
-            box-shadow: var(--shadow-soft);
+            border-radius: 20px;
+            padding: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .pipeline-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Visual SVG Pipeline Flow Chart */
+        .pipeline-flow {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .pipeline-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Node graphics */
+        .pipeline-node {
+            fill: var(--bg-darker);
+            stroke: var(--border-color);
+            stroke-width: 2px;
             transition: var(--transition-smooth);
+        }
+
+        .pipeline-node-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+            transition: var(--transition-smooth);
+        }
+
+        /* SVG Paths (Wires) */
+        .flow-wire {
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 2px;
+            stroke-dasharray: 4;
+            transition: var(--transition-smooth);
+        }
+
+        /* Moving Data Dot / Packet */
+        .flow-packet {
+            width: 8px;
+            height: 8px;
+            fill: var(--primary);
+            filter: drop-shadow(0 0 6px var(--primary));
+            transition: fill 0.3s, filter 0.3s;
+            animation: transmit-data 3s infinite linear;
+        }
+
+        .flow-packet-danger {
+            fill: var(--rose) !important;
+            filter: drop-shadow(0 0 6px var(--rose)) !important;
+        }
+
+        .flow-packet-emerald {
+            fill: var(--emerald) !important;
+            filter: drop-shadow(0 0 6px var(--emerald)) !important;
+        }
+
+        @keyframes transmit-data {
+            0% { motion-offset: 0%; }
+            100% { motion-offset: 100%; }
+        }
+
+        /* PriceShield Shield Element in Pipeline SVG */
+        .shield-node {
+            fill: rgba(6, 182, 212, 0.05);
+            stroke: var(--border-color);
+            stroke-width: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        .shield-node.active {
+            fill: rgba(6, 182, 212, 0.15);
+            stroke: var(--primary);
+            filter: drop-shadow(0 0 10px var(--primary-glow));
+        }
+
+        .shield-node.danger-active {
+            fill: rgba(244, 63, 94, 0.15);
+            stroke: var(--rose);
+            filter: drop-shadow(0 0 10px var(--rose-glow));
+        }
+
+        .shield-node-icon {
+            fill: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .shield-node.active .shield-node-icon {
+            fill: var(--primary);
+        }
+
+        .shield-node.danger-active .shield-node-icon {
+            fill: var(--rose);
+        }
+
+        /* Details explanations */
+        .pipeline-detail-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .detail-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Right Column: Visualizer Mockup Cards */
+        .visualizer-panel {
+            background: rgba(4, 5, 8, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
         }
 
         .panel-header {
@@ -316,8 +610,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 16px;
-            margin-bottom: 24px;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
         }
 
         .storefront-title {
@@ -326,17 +620,17 @@
             gap: 8px;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--ink-soft);
+            color: var(--text-secondary);
         }
 
         .system-status-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(26, 26, 26, 0.04);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-color);
             padding: 4px 12px;
             border-radius: 999px;
@@ -349,36 +643,36 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: var(--ink-faint);
+            background: var(--text-muted);
             transition: var(--transition-smooth);
         }
 
         /* Active Badge States */
         .system-status-badge.state-healthy {
-            background: rgba(82, 224, 17, 0.08);
-            border-color: rgba(82, 224, 17, 0.15);
-            color: #2E8A00;
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.15);
+            color: var(--emerald);
         }
         .system-status-badge.state-healthy .badge-dot {
-            background: var(--shield-green);
-            box-shadow: 0 0 6px var(--shield-green);
+            background: var(--emerald);
+            box-shadow: 0 0 6px var(--emerald);
         }
 
         .system-status-badge.state-warning {
             background: rgba(245, 158, 11, 0.08);
             border-color: rgba(245, 158, 11, 0.2);
-            color: #B45309;
+            color: var(--amber);
         }
         .system-status-badge.state-warning .badge-dot {
-            background: #F59E0B;
-            box-shadow: 0 0 6px #F59E0B;
+            background: var(--amber);
+            box-shadow: 0 0 6px var(--amber);
         }
 
         .system-status-badge.state-leak {
-            background: rgba(255, 59, 95, 0.08);
-            border-color: rgba(255, 59, 95, 0.15);
-            color: #C10022;
-            animation: pulse-border 2s infinite;
+            background: rgba(244, 63, 94, 0.08);
+            border-color: rgba(244, 63, 94, 0.15);
+            color: var(--rose);
+            animation: pulse-border 2.5s infinite;
         }
         .system-status-badge.state-leak .badge-dot {
             background: var(--rose);
@@ -387,13 +681,13 @@
         }
 
         .system-status-badge.state-shield {
-            background: rgba(82, 224, 17, 0.12);
-            border-color: rgba(82, 224, 17, 0.25);
-            color: #246B00;
+            background: rgba(6, 182, 212, 0.12);
+            border-color: rgba(6, 182, 212, 0.25);
+            color: var(--primary);
         }
         .system-status-badge.state-shield .badge-dot {
-            background: var(--shield-green);
-            box-shadow: 0 0 10px var(--shield-green);
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
         }
 
         @keyframes pulse-dot {
@@ -402,36 +696,35 @@
             100% { transform: scale(1); opacity: 1; }
         }
         @keyframes pulse-border {
-            0% { border-color: rgba(255, 59, 95, 0.15); }
-            50% { border-color: rgba(255, 59, 95, 0.4); }
-            100% { border-color: rgba(255, 59, 95, 0.15); }
+            0% { border-color: rgba(244, 63, 94, 0.15); }
+            50% { border-color: rgba(244, 63, 94, 0.4); }
+            100% { border-color: rgba(244, 63, 94, 0.15); }
         }
 
-        /* Catalog Card Mockup */
+        /* Shopify Card Mockup */
         .catalog-card {
-            background: var(--paper);
+            background: rgba(4, 5, 8, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 24px;
-            box-shadow: var(--shadow-soft);
             transition: var(--transition-smooth);
             position: relative;
             overflow: hidden;
         }
 
         .catalog-card.card-warning {
-            border-color: rgba(245, 158, 11, 0.3);
-            box-shadow: 0 15px 35px -15px rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.25);
+            box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.08);
         }
 
         .catalog-card.card-danger {
-            border-color: rgba(255, 59, 95, 0.3);
-            box-shadow: 0 15px 35px -15px rgba(255, 59, 95, 0.15);
+            border-color: rgba(244, 63, 94, 0.25);
+            box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.08);
         }
 
         .catalog-card.card-shield {
-            border-color: rgba(82, 224, 17, 0.3);
-            box-shadow: 0 15px 35px -15px rgba(82, 224, 17, 0.15);
+            border-color: rgba(6, 182, 212, 0.25);
+            box-shadow: 0 15px 30px -10px rgba(6, 182, 212, 0.08);
         }
 
         .card-title-row {
@@ -443,14 +736,14 @@
 
         .product-name {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            color: var(--ink);
+            color: var(--text-primary);
         }
 
         .product-meta {
             font-size: 11px;
-            color: var(--ink-faint);
+            color: var(--text-muted);
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -459,14 +752,14 @@
         .product-sku {
             font-size: 11px;
             font-family: monospace;
-            background: var(--paper-warm);
+            background: var(--bg-darker);
             border: 1px solid var(--border-color);
             padding: 2px 8px;
             border-radius: 4px;
-            color: var(--ink-soft);
+            color: var(--text-secondary);
         }
 
-        /* Metrics Display Grid */
+        /* Card Metrics */
         .card-metrics {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -475,7 +768,7 @@
         }
 
         .metric-tile {
-            background: var(--paper-warm);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 16px;
@@ -487,7 +780,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: var(--ink-faint);
+            color: var(--text-muted);
             margin-bottom: 6px;
         }
 
@@ -495,20 +788,20 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 24px;
             font-weight: 700;
-            color: var(--ink);
+            color: var(--text-primary);
             transition: var(--transition-smooth);
         }
 
         .metric-tile-value.alert-red {
-            color: var(--rose);
+            color: var(--rose) !important;
         }
 
         .metric-tile-value.alert-green {
-            color: #246B00;
+            color: var(--emerald) !important;
         }
 
         .margin-banner {
-            background: var(--paper-warm);
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 14px 18px;
@@ -521,39 +814,39 @@
         .margin-lbl {
             font-size: 13px;
             font-weight: 500;
-            color: var(--ink-soft);
+            color: var(--text-secondary);
         }
 
         .margin-val {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 18px;
-            color: #2E8A00;
+            color: var(--emerald);
             transition: var(--transition-smooth);
         }
 
         .margin-val.amber {
-            color: #B45309;
+            color: var(--amber);
         }
 
         .margin-val.negative {
             color: var(--rose);
         }
 
-        /* Order Feed Notification Overlay */
+        /* Order notification feed overlay */
         .order-notification {
             position: absolute;
             bottom: -80px;
             left: 20px;
             right: 20px;
-            background: var(--ink);
-            color: var(--paper);
+            background: var(--text-primary);
+            color: var(--bg-darker);
             border-radius: 12px;
             padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: var(--shadow-deep);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             opacity: 0;
             z-index: 10;
@@ -566,211 +859,67 @@
 
         .order-text {
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .order-margin-alert {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             padding: 2px 8px;
             border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .order-margin-alert.leak {
             background: var(--rose);
-            color: var(--paper);
+            color: var(--text-primary);
         }
 
         .order-margin-alert.healthy {
-            background: var(--shield-green);
-            color: var(--ink);
+            background: var(--emerald);
+            color: var(--bg-darker);
         }
 
-        /* Action Alert Banner under Card */
-        .status-explanation-banner {
-            margin-top: 20px;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-            border: 1px solid transparent;
-            transition: var(--transition-smooth);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .status-explanation-banner.state-0 {
-            background: rgba(26, 26, 26, 0.02);
-            border-color: var(--border-color);
-            color: var(--ink-soft);
-        }
-
-        .status-explanation-banner.state-1 {
-            background: rgba(245, 158, 11, 0.04);
-            border-color: rgba(245, 158, 11, 0.15);
-            color: #8A4F00;
-        }
-
-        .status-explanation-banner.state-2 {
-            background: rgba(255, 59, 95, 0.04);
-            border-color: rgba(255, 59, 95, 0.15);
-            color: #C10022;
-        }
-
-        .status-explanation-banner.state-3 {
-            background: rgba(82, 224, 17, 0.06);
-            border-color: rgba(82, 224, 17, 0.2);
-            color: #246B00;
-        }
-
-        /* Right Panel: Storytelling Steps */
-        .storytelling-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .story-step {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 24px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            position: relative;
-        }
-
-        .story-step:hover {
-            border-color: var(--border-hover);
-            background: rgba(26, 26, 26, 0.01);
-        }
-
-        .story-step.active {
-            border-color: var(--ink);
-            background: var(--paper);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .story-step.active::after {
-            content: '';
-            position: absolute;
-            left: -1px;
-            top: 20px;
-            bottom: 20px;
-            width: 3px;
-            background: var(--ink);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .story-step.active.shield-active::after {
-            background: var(--shield-green);
-        }
-        .story-step.active.shield-active {
-            border-color: var(--shield-green);
-            box-shadow: 0 15px 35px -15px rgba(82, 224, 17, 0.12);
-        }
-
-        .step-num-row {
+        /* Bottom Control Panel & Explanation */
+        .controls-container {
+            margin-top: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
         }
 
-        .step-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--ink-faint);
-            letter-spacing: 0.1em;
+        .explanation-card {
+            max-width: 60%;
         }
 
-        .story-step.active .step-number {
-            color: var(--ink-soft);
-        }
-
-        .step-type-pill {
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 2px 8px;
-            border-radius: 4px;
-            background: rgba(26, 26, 26, 0.05);
-            color: var(--ink-soft);
-        }
-
-        .story-step.active .step-type-pill.type-danger {
-            background: rgba(255, 59, 95, 0.1);
-            color: var(--rose);
-        }
-
-        .story-step.active .step-type-pill.type-shield {
-            background: rgba(82, 224, 17, 0.15);
-            color: #2E8A00;
-        }
-
-        .step-title {
+        .explanation-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 16px;
             font-weight: 700;
-            color: var(--ink);
+            color: var(--text-primary);
             margin-bottom: 8px;
         }
 
-        .step-explanation {
+        .explanation-desc {
             font-size: 13px;
-            color: var(--ink-soft);
-            margin-bottom: 14px;
-            display: none;
-            transition: var(--transition-smooth);
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
-        .story-step.active .step-explanation {
-            display: block;
-        }
-
-        .step-role-box {
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .story-step.active .step-role-box {
-            display: block;
-        }
-
-        .role-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--ink-faint);
-            margin-bottom: 4px;
-        }
-
-        .role-desc {
-            font-size: 12.5px;
-            font-weight: 500;
-            color: var(--ink);
-        }
-
-        /* Timeline Navigation buttons */
-        .timeline-actions {
+        .control-buttons {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 8px;
-            padding: 0 4px;
+            gap: 16px;
         }
 
         .next-step-btn {
-            background: var(--ink);
+            background: var(--text-primary);
             border: none;
-            color: var(--paper);
+            color: var(--bg-darker);
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             font-size: 13px;
@@ -784,18 +933,18 @@
         }
 
         .next-step-btn:hover {
-            background: var(--ink-soft);
+            opacity: 0.9;
             transform: translateY(-1px);
         }
 
         .autoplay-btn {
             background: transparent;
             border: 1px solid var(--border-color);
-            color: var(--ink-soft);
+            color: var(--text-secondary);
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             font-size: 12px;
-            padding: 10px 18px;
+            padding: 11px 18px;
             border-radius: 12px;
             cursor: pointer;
             transition: var(--transition-smooth);
@@ -805,19 +954,19 @@
         }
 
         .autoplay-btn:hover {
-            border-color: var(--ink-soft);
-            color: var(--ink);
+            border-color: var(--text-primary);
+            color: var(--text-primary);
         }
 
         .autoplay-btn.is-playing {
-            background: rgba(82, 224, 17, 0.08);
-            border-color: rgba(82, 224, 17, 0.2);
-            color: #2E8A00;
+            background: rgba(6, 182, 212, 0.08);
+            border-color: rgba(6, 182, 212, 0.2);
+            color: var(--primary);
         }
 
-        /* Business Value Grid Section */
+        /* Business Value Section */
         .value-section {
-            margin-bottom: 100px;
+            margin-bottom: 80px;
             border-top: 1px solid var(--border-color);
             padding-top: 80px;
         }
@@ -834,11 +983,11 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 14px;
-            color: var(--ink);
+            color: var(--text-primary);
         }
 
         .section-header p {
-            color: var(--ink-soft);
+            color: var(--text-secondary);
             font-size: 0.95rem;
         }
 
@@ -856,7 +1005,7 @@
         }
 
         .value-card {
-            background: var(--paper);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 32px;
@@ -866,74 +1015,72 @@
         .value-card:hover {
             border-color: var(--border-hover);
             transform: translateY(-3px);
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .value-icon {
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: var(--paper-warm);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--ink);
+            color: var(--text-primary);
             margin-bottom: 20px;
             transition: var(--transition-smooth);
         }
 
         .value-card:hover .value-icon {
-            background: var(--ink);
-            color: var(--paper);
-        }
-
-        .value-card:hover .value-icon.icon-green {
-            background: var(--shield-green);
-            color: var(--ink);
-            border-color: rgba(82, 224, 17, 0.2);
+            background: var(--primary);
+            color: var(--bg-darker);
+            border-color: rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         .value-title {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 16px;
-            color: var(--ink);
+            color: var(--text-primary);
             margin-bottom: 10px;
         }
 
         .value-desc {
-            color: var(--ink-soft);
+            color: var(--text-secondary);
             font-size: 13px;
             line-height: 1.6;
         }
 
-        /* Closing CTA Box Section */
+        /* CTA Section */
         .cta-section {
             margin-bottom: 60px;
         }
 
         .cta-box {
-            background: var(--ink);
-            color: var(--paper);
+            background: rgba(4, 5, 8, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             border-radius: 28px;
             padding: 64px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-deep);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
         }
 
-        /* Subtle neon light ray inside dark CTA box */
         .cta-box::before {
             content: '';
             position: absolute;
             top: -150px;
             left: 50%;
             transform: translateX(-50%);
-            width: 400px;
+            width: 500px;
             height: 300px;
-            background: radial-gradient(circle, rgba(82, 224, 17, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -946,7 +1093,7 @@
         }
 
         .cta-desc {
-            color: var(--ink-faint);
+            color: var(--text-secondary);
             max-width: 580px;
             margin: 0 auto 32px auto;
             font-size: 15px;
@@ -957,8 +1104,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--shield-green);
-            color: var(--ink);
+            background: var(--primary);
+            color: var(--bg-darker);
             text-decoration: none;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
@@ -966,13 +1113,13 @@
             padding: 14px 32px;
             border-radius: 999px;
             transition: var(--transition-smooth);
-            box-shadow: 0 10px 25px rgba(82, 224, 17, 0.2);
+            box-shadow: 0 10px 25px var(--primary-glow);
         }
 
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(82, 224, 17, 0.3);
-            background: #63ff13;
+            box-shadow: 0 15px 30px rgba(6, 182, 212, 0.4);
+            background: #22d3ee;
         }
 
         /* Footer */
@@ -984,7 +1131,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--ink-faint);
+            color: var(--text-muted);
             font-size: 12px;
         }
 
@@ -1001,19 +1148,27 @@
         }
 
         footer a {
-            color: var(--ink-faint);
+            color: var(--text-muted);
             text-decoration: none;
             transition: var(--transition-smooth);
         }
 
         footer a:hover {
-            color: var(--ink);
+            color: var(--text-primary);
         }
     </style>
 </head>
 <body>
 
-    <!-- Pinned Side Rails (Open Design layout) -->
+    <!-- Tech Grid Background -->
+    <div class="bg-grid"></div>
+
+    <!-- Floating colorful accent blur elements -->
+    <div class="blur-blob blob-cyan"></div>
+    <div class="blur-blob blob-purple"></div>
+    <div class="blur-blob blob-green"></div>
+
+    <!-- Pinned side rails -->
     <div class="side-rail left">
         <span class="rail-text">PRICESHIELD MARGIN AUTOMATION</span>
     </div>
@@ -1047,15 +1202,81 @@
             <p class="hero-desc">Wholesale costs change constantly. If you are copying manufacturer sheets manually, your retail prices lag behind. PriceShield intercepts supplier files, sanitizes errors, and secures your profits automatically.</p>
         </section>
 
-        <!-- Interactive Showcase (Recreated Demo) -->
+        <!-- Interactive Stepper & Showcase container -->
         <section class="showcase-container" id="demo-section">
-            <div class="showcase-title-row">
-                <h2>Interactive Margin Leak Simulator</h2>
-                <p>Click the steps below to witness the silent leak in action and see how we intercept it.</p>
+            
+            <!-- Stepper Progress Header -->
+            <div class="stepper-header">
+                <div class="stepper-bar-fill">
+                    <div class="stepper-progress" id="stepper-progress-fill"></div>
+                </div>
+                <div class="step-indicator active" id="step-ind-0" onclick="setStep(0)">
+                    <div class="step-circle">01</div>
+                    <span class="step-label">Baseline</span>
+                </div>
+                <div class="step-indicator" id="step-ind-1" onclick="setStep(1)">
+                    <div class="step-circle">02</div>
+                    <span class="step-label">Price Hike</span>
+                </div>
+                <div class="step-indicator" id="step-ind-2" onclick="setStep(2)">
+                    <div class="step-circle">03</div>
+                    <span class="step-label">Margin Leak</span>
+                </div>
+                <div class="step-indicator" id="step-ind-3" onclick="setStep(3)">
+                    <div class="step-circle">04</div>
+                    <span class="step-label">Shield Active</span>
+                </div>
             </div>
 
-            <div class="demo-grid">
-                <!-- Left Column: Visualizer Mockup -->
+            <!-- Dashboard Split Grid -->
+            <div class="showcase-grid">
+                
+                <!-- Left Column: Visual Data Pipeline Animation -->
+                <div class="pipeline-card">
+                    <div class="pipeline-header">Visual Data Pipeline</div>
+                    
+                    <!-- SVG Interactive Animation Chart -->
+                    <div class="pipeline-flow">
+                        <svg class="pipeline-svg" viewBox="0 0 400 120">
+                            <!-- Paths (Wires) -->
+                            <!-- Wire 1: Supplier -> Shield -->
+                            <path class="flow-wire" id="wire-1" d="M 60 60 L 190 60" />
+                            <!-- Wire 2: Shield -> Shopify -->
+                            <path class="flow-wire" id="wire-2" d="M 210 60 L 340 60" />
+                            
+                            <!-- Moving Data Packets along wires -->
+                            <circle class="flow-packet" id="packet-1" r="5">
+                                <animateMotion id="anim-packet-1" dur="2.5s" repeatCount="indefinite" path="M 60 60 L 190 60" />
+                            </circle>
+                            <circle class="flow-packet" id="packet-2" r="5">
+                                <animateMotion id="anim-packet-2" dur="2.5s" repeatCount="indefinite" path="M 210 60 L 340 60" />
+                            </circle>
+
+                            <!-- Node 1: Supplier CSV -->
+                            <rect class="pipeline-node" x="10" y="30" width="50" height="60" rx="6" />
+                            <text class="pipeline-node-text" x="35" y="55">Supplier</text>
+                            <text class="pipeline-node-text" x="35" y="70" style="font-size: 8px; fill: var(--text-muted);">PRICE LIST</text>
+
+                            <!-- Node 2: PriceShield Gate (Shield symbol) -->
+                            <path class="shield-node" id="svg-shield-node" d="M 200 35 L 220 45 L 220 75 L 200 85 L 180 75 L 180 45 Z" />
+                            <path class="shield-node-icon" id="svg-shield-icon" d="M 200 48 L 210 54 L 210 68 L 200 75 L 190 68 L 190 54 Z" />
+                            <text class="pipeline-node-text" x="200" y="100">PriceShield</text>
+
+                            <!-- Node 3: Shopify -->
+                            <rect class="pipeline-node" x="340" y="30" width="50" height="60" rx="6" />
+                            <text class="pipeline-node-text" x="365" y="55">Shopify</text>
+                            <text class="pipeline-node-text" x="365" y="70" style="font-size: 8px; fill: var(--text-muted);">STOREFRONT</text>
+                        </svg>
+                    </div>
+
+                    <!-- Flow Description Box -->
+                    <div class="pipeline-detail-box">
+                        <div class="detail-label" id="detail-pipeline-lbl">Current Pipeline Phase</div>
+                        <div class="detail-desc" id="detail-pipeline-desc">Standard operations flow. Supplier wholesale list updates pass through the PriceShield scanner into Shopify.</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Visualizer Mockup Cards -->
                 <div class="visualizer-panel">
                     <div class="panel-header">
                         <span class="storefront-title">
@@ -1102,91 +1323,32 @@
                             <span class="margin-val" id="margin-percentage-val">28.5% ($40.00)</span>
                         </div>
                     </div>
-
-                    <!-- System Action Banner -->
-                    <div class="status-explanation-banner state-0" id="status-explanation">
-                        <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-                        </svg>
-                        <span id="explanation-text">Monitoring baseline catalog. Wholesale cost and retail price are in sync.</span>
-                    </div>
-                </div>
-
-                <!-- Right Column: Scenario Timeline -->
-                <div class="storytelling-panel">
-                    <!-- Step 1 -->
-                    <div class="story-step active" id="step-card-0" onclick="setStep(0)">
-                        <div class="step-num-row">
-                            <span class="step-number">STEP 01</span>
-                            <span class="step-type-pill">Baseline</span>
-                        </div>
-                        <h3 class="step-title">Standard Healthy Catalog</h3>
-                        <p class="step-explanation">The storefront runs under standard conditions. The product is priced at $140.00 against a wholesale cost of $100.00, returning a healthy profit margin of 28.5% per sale.</p>
-                        <div class="step-role-box">
-                            <div class="role-label">Our Baseline Configuration</div>
-                            <div class="role-desc">We map the supplier's cost sheet fields and establish a clean connection to your Shopify catalog.</div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="story-step" id="step-card-1" onclick="setStep(1)">
-                        <div class="step-num-row">
-                            <span class="step-number">STEP 02</span>
-                            <span class="step-type-pill type-danger">Cost Hike</span>
-                        </div>
-                        <h3 class="step-title">Manufacturer Cost Increase</h3>
-                        <p class="step-explanation">The manufacturer issues a new wholesale price list, raising the cost from $100.00 to $130.00. Because the price sheet hasn't been manually processed yet, the storefront price remains at $140.00, degrading profit margins down to a critical 7.1%.</p>
-                        <div class="step-role-box">
-                            <div class="role-label">What We Detect</div>
-                            <div class="role-desc">Our validation worker parses the incoming cost sheet and instantly flags the margin breach in the background.</div>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="story-step" id="step-card-2" onclick="setStep(2)">
-                        <div class="step-num-row">
-                            <span class="step-number">STEP 03</span>
-                            <span class="step-type-pill type-danger">Margin Leak</span>
-                        </div>
-                        <h3 class="step-title">The Silent Margin Leak</h3>
-                        <p class="step-explanation">The wholesale cost spikes further to $150.00 (surpassing the retail price). A customer places an order. Since the site is not updated, the transaction completes at the old $140.00 price, causing an active net loss of -$10.00 per order. Your store is paying to ship products.</p>
-                        <div class="step-role-box">
-                            <div class="role-label">The Risk We Eliminate</div>
-                            <div class="role-desc">Without automation, this leak goes unnoticed until the end of the month. We intercept this before the financial damage occurs.</div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="story-step shield-active" id="step-card-3" onclick="setStep(3)">
-                        <div class="step-num-row">
-                            <span class="step-number">STEP 04</span>
-                            <span class="step-type-pill type-shield">PriceShield</span>
-                        </div>
-                        <h3 class="step-title">PriceShield Safeguard</h3>
-                        <p class="step-explanation">The validation gate intercepts the cost change, applies the configured margin rule, and pushes an instant catalog update. The retail price is automatically adjusted to $214.30 on Shopify, securing a healthy 30.0% margin.</p>
-                        <div class="step-role-box">
-                            <div class="role-label">Automated Remediation</div>
-                            <div class="role-desc">Retail prices are recalculated and updated in real-time, blocking the margin leak instantly and securing your store cash flow.</div>
-                        </div>
-                    </div>
-
-                    <!-- Navigation and Autoplay -->
-                    <div class="timeline-actions">
-                        <button class="autoplay-btn" id="autoplay-btn" onclick="toggleAutoplay()">
-                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <span>Auto-Play Scenario</span>
-                        </button>
-                        <button class="next-step-btn" id="next-step-btn" onclick="nextStep()">
-                            <span>Next Scenario Step</span>
-                            <svg style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;" viewBox="0 0 24 24">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
-                        </button>
-                    </div>
                 </div>
             </div>
+
+            <!-- Bottom Explanation & Controls Container -->
+            <div class="controls-container">
+                <div class="explanation-card">
+                    <div class="explanation-title" id="explanation-title-val">Step 01: Standard Catalog</div>
+                    <div class="explanation-desc" id="explanation-desc-val">Wholesale cost and retail prices are aligned. Store generates healthy margins. No synchronization lags or errors present.</div>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="autoplay-btn" id="autoplay-btn" onclick="toggleAutoplay()">
+                        <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <span>Auto-Play Scenario</span>
+                    </button>
+                    <button class="next-step-btn" id="next-step-btn" onclick="nextStep()">
+                        <span>Next Scenario Step</span>
+                        <svg style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
         </section>
 
         <!-- Business Value Section -->
@@ -1199,7 +1361,7 @@
             <div class="value-grid">
                 <!-- Card 1 -->
                 <div class="value-card">
-                    <div class="value-icon icon-green">
+                    <div class="value-icon">
                         <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
@@ -1274,75 +1436,117 @@
             {
                 retail: "$140.00",
                 cost: "$100.00",
-                profit: "+$40.00",
                 margin: "28.5% ($40.00)",
                 marginClass: "margin-val",
                 retailClass: "metric-tile-value",
                 costClass: "metric-tile-value",
                 statusClass: "system-status-badge state-healthy",
                 statusText: "System Normal",
-                explanation: "Monitoring baseline catalog. Wholesale cost and retail price are in sync.",
-                explanationClass: "status-explanation-banner state-0",
+                
+                // Timeline progress percentage
+                progressWidth: "0%",
+
+                // Stepper styling configuration
+                indClassList: ["step-indicator", "active", "healthy"],
+
+                // Pipeline configuration values
+                packetClass1: "flow-packet flow-packet-emerald",
+                packetClass2: "flow-packet flow-packet-emerald",
+                shieldClass: "shield-node",
+                pipelineDesc: "Standard e-commerce flow. Supplier wholesale cost updates pass through the PriceShield scanner, verifying target margins before updating the Shopify catalog.",
+
+                // Alert details
                 orderActive: false,
                 orderText: "",
-                orderMarginClass: ""
+                orderMarginClass: "",
+
+                // Timeline explanations
+                stepTitle: "Step 01: Standard Healthy Catalog",
+                stepDesc: "The store runs normally. Standard cost updates flow into the storefront, calculating a clean 28.5% margin per product sale."
             },
             {
                 retail: "$140.00",
                 cost: "$130.00",
-                profit: "+$10.00",
                 margin: "7.1% ($10.00)",
                 marginClass: "margin-val amber",
                 retailClass: "metric-tile-value",
                 costClass: "metric-tile-value alert-red",
                 statusClass: "system-status-badge state-warning",
                 statusText: "Margin Warning",
-                explanation: "Supplier raised cost to $130. Margin degraded to 7.1%. Price sync lag active.",
-                explanationClass: "status-explanation-banner state-1",
+                
+                progressWidth: "33%",
+                indClassList: ["step-indicator", "active", "warning"],
+
+                packetClass1: "flow-packet flow-packet-danger",
+                packetClass2: "flow-packet flow-packet-danger",
+                shieldClass: "shield-node danger-active",
+                pipelineDesc: "A raw CSV cost sheet update raises wholesale cost to $130. PriceShield detects margin erosion but manual catalog processing lag leaves storefront retail price unchanged.",
+
                 orderActive: false,
                 orderText: "",
-                orderMarginClass: ""
+                orderMarginClass: "",
+
+                stepTitle: "Step 02: Manufacturer Cost Increase",
+                stepDesc: "Wholesale cost jumps from $100 to $130. Manual updates take hours. Storefront retail price remains unchanged, degrading your gross margins to 7.1%."
             },
             {
                 retail: "$140.00",
                 cost: "$150.00",
-                profit: "-$10.00",
                 margin: "-7.1% (-$10.00)",
                 marginClass: "margin-val negative",
                 retailClass: "metric-tile-value",
                 costClass: "metric-tile-value alert-red",
                 statusClass: "system-status-badge state-leak",
                 statusText: "Margin Leak Detected",
-                explanation: "Wholesale cost ($150) exceeds retail ($140). Catalog leaking cash.",
-                explanationClass: "status-explanation-banner state-2",
+                
+                progressWidth: "66%",
+                indClassList: ["step-indicator", "active", "danger"],
+
+                packetClass1: "flow-packet flow-packet-danger",
+                packetClass2: "flow-packet flow-packet-danger",
+                shieldClass: "shield-node danger-active",
+                pipelineDesc: "The pricing lag causes a transaction leak. A customer places an order at the old price ($140) while wholesale cost is $150, resulting in a direct cash loss.",
+
                 orderActive: true,
-                orderText: "Incoming Order: Net Profit -$10.00",
+                orderText: "Customer Order placed: SKU AUTO-12",
                 orderMarginClass: "order-margin-alert leak",
-                orderMarginText: "Loss Incurred"
+                orderMarginText: "Net Loss: -$10.00",
+
+                stepTitle: "Step 03: The Silent Margin Leak",
+                stepDesc: "Cost spikes above retail ($150 cost vs $140 retail). Customer order goes through at the old price. You are now paying to ship products to buyers."
             },
             {
                 retail: "$214.30",
                 cost: "$150.00",
-                profit: "+$64.30",
                 margin: "30.0% ($64.30)",
                 marginClass: "margin-val",
                 retailClass: "metric-tile-value alert-green",
                 costClass: "metric-tile-value",
                 statusClass: "system-status-badge state-shield",
                 statusText: "PriceShield Protected",
-                explanation: "PriceShield intercepted price list. Retail updated to secure 30% margin.",
-                explanationClass: "status-explanation-banner state-3",
+                
+                progressWidth: "100%",
+                indClassList: ["step-indicator", "active"], // Standard active (Cyan)
+
+                packetClass1: "flow-packet flow-packet-danger",
+                packetClass2: "flow-packet flow-packet-emerald",
+                shieldClass: "shield-node active",
+                pipelineDesc: "PriceShield validation worker intercepts the cost change, automatically calculates the retail price based on a 30% margin rule, and pushes the updated price to Shopify.",
+
                 orderActive: true,
-                orderText: "Incoming Order: Net Profit +$64.30",
+                orderText: "Customer Order placed: SKU AUTO-12",
                 orderMarginClass: "order-margin-alert healthy",
-                orderMarginText: "Margin Secured"
+                orderMarginText: "Net Profit: +$64.30",
+
+                stepTitle: "Step 04: PriceShield Intercept",
+                stepDesc: "Bespoke pipeline intercepts the wholesale sheet, automatically updates retail price to $214.30, and blocks transaction losses instantly."
             }
         ];
 
         function setStep(stepIndex) {
             currentStep = stepIndex;
             updateVisualizer();
-            updateTimelineUI();
+            updateStepperUI();
         }
 
         function updateVisualizer() {
@@ -1353,14 +1557,15 @@
             document.getElementById('wholesale-cost-val').textContent = state.cost;
             document.getElementById('margin-percentage-val').textContent = state.margin;
             document.getElementById('system-status-text').textContent = state.statusText;
-            document.getElementById('explanation-text').textContent = state.explanation;
+            document.getElementById('detail-pipeline-desc').textContent = state.pipelineDesc;
+            document.getElementById('explanation-title-val').textContent = state.stepTitle;
+            document.getElementById('explanation-desc-val').textContent = state.stepDesc;
 
             // Update CSS Classes
             document.getElementById('retail-price-val').className = state.retailClass;
             document.getElementById('wholesale-cost-val').className = state.costClass;
             document.getElementById('margin-percentage-val').className = state.marginClass;
             document.getElementById('system-status').className = state.statusClass;
-            document.getElementById('status-explanation').className = state.explanationClass;
 
             // Update Card Border State
             const card = document.getElementById('catalog-card');
@@ -1368,6 +1573,24 @@
             if (currentStep === 1) card.classList.add('card-warning');
             if (currentStep === 2) card.classList.add('card-danger');
             if (currentStep === 3) card.classList.add('card-shield');
+
+            // Update SVG Pipeline elements
+            document.getElementById('packet-1').className.baseVal = state.packetClass1;
+            document.getElementById('packet-2').className.baseVal = state.packetClass2;
+            document.getElementById('svg-shield-node').className.baseVal = state.shieldClass;
+
+            // Adjust pipeline detail title depending on state
+            const flowLabel = document.getElementById('detail-pipeline-lbl');
+            if (currentStep === 2) {
+                flowLabel.textContent = "Pipeline Status: Leak Intercepted";
+                flowLabel.style.color = "var(--rose)";
+            } else if (currentStep === 3) {
+                flowLabel.textContent = "Pipeline Status: Shield Remediated";
+                flowLabel.style.color = "var(--primary)";
+            } else {
+                flowLabel.textContent = "Current Pipeline Phase";
+                flowLabel.style.color = "var(--text-muted)";
+            }
 
             // Update Order Notification Feed Banner
             const orderBanner = document.getElementById('order-banner');
@@ -1382,14 +1605,22 @@
             }
         }
 
-        function updateTimelineUI() {
-            // Update Active Card Class
+        function updateStepperUI() {
+            // Update top progress bar fill
+            document.getElementById('stepper-progress-fill').style.width = states[currentStep].progressWidth;
+
+            // Update indicator circles & labels
             for (let i = 0; i < 4; i++) {
-                const card = document.getElementById(`step-card-${i}`);
-                if (i === currentStep) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
+                const indicator = document.getElementById(`step-ind-${i}`);
+                indicator.className = "step-indicator";
+                
+                if (i < currentStep) {
+                    // Mark passed steps as active & healthy
+                    indicator.classList.add('active');
+                } else if (i === currentStep) {
+                    // Current step style mapping
+                    const classes = states[currentStep].indClassList;
+                    classes.forEach(c => indicator.classList.add(c));
                 }
             }
 
@@ -1427,17 +1658,17 @@
                 label.textContent = "Pause Scenario";
                 icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Pause glyph
                 
-                // Set interval to step through every 4.5 seconds
+                // Set interval to step through every 5 seconds
                 autoplayInterval = setInterval(function() {
                     nextStep();
-                }, 4500);
+                }, 5000);
             }
         }
 
         // Initialize visualizer state on page load
         window.addEventListener('DOMContentLoaded', function() {
             updateVisualizer();
-            updateTimelineUI();
+            updateStepperUI();
         });
     </script>
 </body>

@@ -1,0 +1,43 @@
+name: PriceShield B2B Outreach Pipeline
+
+on:
+  schedule:
+    # Runs daily at 9:00 AM UTC (2:30 PM IST)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    # Allows manually triggering the pipeline from the GitHub Actions tab
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+
+    - name: Run Outreach Pipeline
+      env:
+        # Load credentials securely from GitHub Secrets
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        SMTP_SERVER: smtp.gmail.com
+        SMTP_PORT: 587
+        SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+        TEST_RECIPIENT_EMAIL: ${{ secrets.TEST_RECIPIENT_EMAIL }}
+        OUTREACH_MODE: live
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+        BUILTWITH_API_KEY: ${{ secrets.BUILTWITH_API_KEY }}
+      run: |
+        # Execute the main pipeline coordinator
+        python poc_1_lead_gen_etl/auto_outreach_pipeline.py

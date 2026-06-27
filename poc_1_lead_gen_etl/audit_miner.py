@@ -165,8 +165,8 @@ Best,
 Aum
 Integration Specialist
 
-P.S. For your developer or IT manager, here's a system flowchart showing how the price protection gate works:
-https://raw.githubusercontent.com/Aum31/inventory-sync-diagram/main/system_flow.png
+P.S. You can see a live, interactive simulation of how this automatic margin protection shield blocks price leaks here:
+https://aum31.github.io/inventory-sync-diagram/
 """
 
     # Save the audit report to a file
@@ -236,6 +236,7 @@ PART 2: A highly personalized, short, and casual cold email pitch to the owner.
 - Mention the specific products and the exact pricing discrepancies found in the audit to prove you actually looked at their business.
 - Provide a low-pressure close: "I compiled the full PDF audit report. Would it be alright if I sent it over, or shared a quick text walkthrough of how we automate this to protect your margins?"
 - Sign off as: "Best, Aum"
+- Include a P.S. line linking to the live interactive dashboard: "P.S. You can see a live, interactive simulation of how this automatic margin protection shield blocks price leaks here: https://aum31.github.io/inventory-sync-diagram/"
 
 Format your entire response exactly like this, using the delimiters:
 ===AUDIT_REPORT===

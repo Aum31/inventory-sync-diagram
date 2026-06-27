@@ -59,7 +59,7 @@
             background-size: 40px 40px;
         }
 
-        /* Floating Colorful Blurs (Matter/Open-Design concept) */
+        /* Floating Colorful Blurs */
         .blur-blob {
             position: fixed;
             border-radius: 50%;
@@ -104,7 +104,7 @@
             100% { transform: translate(-30px, 40px) scale(0.9); }
         }
 
-        /* Fixed Side Rails (Rotated typography) */
+        /* Fixed Side Rails */
         .side-rail {
             position: fixed;
             top: 0;
@@ -146,7 +146,7 @@
             .side-rail { display: none; }
         }
 
-        /* Glass Header (Condenses on scroll) */
+        /* Glass Header */
         header.site-header {
             position: fixed;
             top: 0;
@@ -265,7 +265,7 @@
         .hero {
             text-align: center;
             max-width: 760px;
-            margin: 0 auto 80px auto;
+            margin: 0 auto 60px auto;
         }
 
         .hero-badge {
@@ -315,19 +315,154 @@
             line-height: 1.6;
         }
 
-        /* Visual Stepper Timeline Header */
+        /* Plain-English Plain Introductory breakdown section */
+        .intro-section {
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .intro-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .intro-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .intro-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 860px) {
+            .intro-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .intro-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .intro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 20px 20px 0 0;
+            background: transparent;
+            transition: var(--transition-smooth);
+        }
+
+        .intro-card.step-warning::before { background: var(--amber); }
+        .intro-card.step-warning {
+            box-shadow: 0 10px 25px -10px var(--amber-glow);
+        }
+
+        .intro-card.step-danger::before { background: var(--rose); }
+        .intro-card.step-danger {
+            box-shadow: 0 10px 25px -10px var(--rose-glow);
+        }
+
+        .intro-card.step-shield::before { background: var(--primary); }
+        .intro-card.step-shield {
+            box-shadow: 0 10px 25px -10px var(--primary-glow);
+        }
+
+        .intro-step-badge {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .intro-card.step-warning .intro-step-badge { color: var(--amber); }
+        .intro-card.step-danger .intro-step-badge { color: var(--rose); }
+        .intro-card.step-shield .intro-step-badge { color: var(--primary); }
+
+        .intro-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .intro-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Interactive Stepper & Showcase container */
+        .showcase-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            margin-bottom: 80px;
+        }
+
+        .showcase-title-row {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .showcase-title-row h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .showcase-title-row p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
         .stepper-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
-            background: var(--card-bg);
+            background: rgba(4, 5, 8, 0.3);
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 20px 40px;
-            box-shadow: var(--shadow-soft);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
             position: relative;
         }
 
@@ -429,17 +564,6 @@
         }
 
         /* Split Showcase Grid */
-        .showcase-container {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            padding: 40px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            margin-bottom: 80px;
-        }
-
         .showcase-grid {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
@@ -688,17 +812,6 @@
         .system-status-badge.state-shield .badge-dot {
             background: var(--primary);
             box-shadow: 0 0 8px var(--primary);
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes pulse-border {
-            0% { border-color: rgba(244, 63, 94, 0.15); }
-            50% { border-color: rgba(244, 63, 94, 0.4); }
-            100% { border-color: rgba(244, 63, 94, 0.15); }
         }
 
         /* Shopify Card Mockup */
@@ -1202,9 +1315,42 @@
             <p class="hero-desc">Wholesale costs change constantly. If you are copying manufacturer sheets manually, your retail prices lag behind. PriceShield intercepts supplier files, sanitizes errors, and secures your profits automatically.</p>
         </section>
 
+        <!-- Plain-English Plain Introductory Breakdown Section (Added per user request) -->
+        <section class="intro-section">
+            <div class="intro-header">
+                <h2>Why Your Store Needs PriceShield</h2>
+                <p>An explanation of the margin leak problem and our solution in plain English.</p>
+            </div>
+            <div class="intro-grid">
+                <!-- Step 1 Card -->
+                <div class="intro-card step-warning">
+                    <span class="intro-step-badge">01 / The Trigger</span>
+                    <h3 class="intro-title">Suppliers Raise Wholesale Costs</h3>
+                    <p class="intro-desc">Manufacturers update wholesale price sheets constantly. If your store runs thousands of products, processing these updates manually takes hours—or days—of manual spreadsheet entry.</p>
+                </div>
+                <!-- Step 2 Card -->
+                <div class="intro-card step-danger">
+                    <span class="intro-step-badge">02 / The Risk</span>
+                    <h3 class="intro-title">You Sell at the Old Retail Price</h3>
+                    <p class="intro-desc">While wholesale costs spike, your storefront retail prices lag behind. Customers continue buying at the old, low price. Your profit margins collapse, and you actively lose money on every order.</p>
+                </div>
+                <!-- Step 3 Card -->
+                <div class="intro-card step-shield">
+                    <span class="intro-step-badge">03 / The Shield</span>
+                    <h3 class="intro-title">PriceShield Protects You Instantly</h3>
+                    <p class="intro-desc">Bespoke pipelines read manufacturer feeds, catch cost hikes, and automatically recalculate and sync retail prices to Shopify, securing your profit margins before you lose cash flow.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Interactive Stepper & Showcase container -->
         <section class="showcase-container" id="demo-section">
             
+            <div class="showcase-title-row">
+                <h2>Interactive Margin Leak Simulator</h2>
+                <p>Step through the simulation below to witness how data flows and how PriceShield blocks leaks in real-time.</p>
+            </div>
+
             <!-- Stepper Progress Header -->
             <div class="stepper-header">
                 <div class="stepper-bar-fill">
@@ -1235,7 +1381,7 @@
                 <div class="pipeline-card">
                     <div class="pipeline-header">Visual Data Pipeline</div>
                     
-                    <!-- SVG Interactive Animation Chart -->
+                    <!-- Visual SVG Pipeline Flow Chart -->
                     <div class="pipeline-flow">
                         <svg class="pipeline-svg" viewBox="0 0 400 120">
                             <!-- Paths (Wires) -->
@@ -1272,7 +1418,7 @@
                     <!-- Flow Description Box -->
                     <div class="pipeline-detail-box">
                         <div class="detail-label" id="detail-pipeline-lbl">Current Pipeline Phase</div>
-                        <div class="detail-desc" id="detail-pipeline-desc">Standard operations flow. Supplier wholesale list updates pass through the PriceShield scanner into Shopify.</div>
+                        <div class="detail-desc" id="detail-pipeline-desc">Standard operations flow. Supplier wholesale list updates pass through the PriceShield scanner, verifying target margins before updating the Shopify catalog.</div>
                     </div>
                 </div>
 
@@ -1605,6 +1751,7 @@
             }
         }
 
+        // Stepper UI updates
         function updateStepperUI() {
             // Update top progress bar fill
             document.getElementById('stepper-progress-fill').style.width = states[currentStep].progressWidth;

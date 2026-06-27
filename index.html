@@ -814,7 +814,7 @@
             box-shadow: 0 0 8px var(--primary);
         }
 
-        /* Shopify Card Mockup */
+        /* Shopify Catalog Card */
         .catalog-card {
             background: rgba(4, 5, 8, 0.4);
             border: 1px solid var(--border-color);
@@ -998,20 +998,31 @@
         /* Bottom Control Panel & Explanation */
         .controls-container {
             margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: start;
             border-top: 1px solid var(--border-color);
-            padding-top: 24px;
+            padding-top: 28px;
+        }
+
+        @media (max-width: 860px) {
+            .controls-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
 
         .explanation-card {
-            max-width: 60%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
         }
 
         .explanation-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 8px;
@@ -1023,251 +1034,99 @@
             line-height: 1.6;
         }
 
-        .control-buttons {
+        .control-buttons-wrapper {
             display: flex;
-            align-items: center;
-            gap: 16px;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
         }
 
-        .next-step-btn {
-            background: var(--text-primary);
+        .control-buttons {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* Redesigned Autoplay Button (Pulsing Primary Action) */
+        .autoplay-btn {
+            background: var(--emerald);
             border: none;
             color: var(--bg-darker);
             font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
-            padding: 12px 24px;
+            padding: 14px 20px;
             border-radius: 12px;
             cursor: pointer;
             transition: var(--transition-smooth);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            animation: button-pulse 2s infinite;
         }
 
-        .next-step-btn:hover {
-            opacity: 0.9;
+        .autoplay-btn:hover {
+            background: #34d399;
             transform: translateY(-1px);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
         }
 
-        .autoplay-btn {
+        .autoplay-btn.is-playing {
+            background: var(--primary) !important;
+            color: var(--bg-darker) !important;
+            box-shadow: 0 0 15px var(--primary-glow) !important;
+            animation: button-pulse-cyan 2s infinite !important;
+        }
+
+        @keyframes button-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes button-pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+
+        /* Redesigned Next Button (Secondary Outline) */
+        .next-step-btn {
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
-            font-size: 12px;
-            padding: 11px 18px;
+            font-size: 13px;
+            padding: 14px 20px;
             border-radius: 12px;
             cursor: pointer;
             transition: var(--transition-smooth);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
         }
 
-        .autoplay-btn:hover {
+        .next-step-btn:hover {
             border-color: var(--text-primary);
             color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .autoplay-btn.is-playing {
-            background: rgba(6, 182, 212, 0.08);
-            border-color: rgba(6, 182, 212, 0.2);
-            color: var(--primary);
-        }
-
-        /* Business Value Section */
-        .value-section {
-            margin-bottom: 80px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 80px;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 48px auto;
-        }
-
-        .section-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 14px;
-            color: var(--text-primary);
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-        }
-
-        @media (max-width: 768px) {
-            .value-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-        }
-
-        .value-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 32px;
-            transition: var(--transition-smooth);
-        }
-
-        .value-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .value-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            transition: var(--transition-smooth);
-        }
-
-        .value-card:hover .value-icon {
-            background: var(--primary);
-            color: var(--bg-darker);
-            border-color: rgba(6, 182, 212, 0.2);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .value-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-        }
-
-        .value-desc {
-            color: var(--text-secondary);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            margin-bottom: 60px;
-        }
-
-        .cta-box {
-            background: rgba(4, 5, 8, 0.5);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 28px;
-            padding: 64px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-        }
-
-        .cta-box::before {
-            content: '';
-            position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 500px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .cta-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 14px;
-            letter-spacing: -0.02em;
-        }
-
-        .cta-desc {
-            color: var(--text-secondary);
-            max-width: 580px;
-            margin: 0 auto 32px auto;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--primary);
-            color: var(--bg-darker);
-            text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 14px 32px;
-            border-radius: 999px;
-            transition: var(--transition-smooth);
-            box-shadow: 0 10px 25px var(--primary-glow);
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(6, 182, 212, 0.4);
-            background: #22d3ee;
-        }
-
-        /* Footer */
-        footer {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 48px 40px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Helper explanatory caption under button block */
+        .autoplay-caption {
+            font-size: 11px;
             color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        @media (max-width: 600px) {
-            footer {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-            }
-        }
-
-        footer p {
-            font-weight: 500;
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: var(--transition-smooth);
-        }
-
-        footer a:hover {
-            color: var(--text-primary);
+            line-height: 1.4;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 8px 12px;
         }
     </style>
 </head>
@@ -1315,7 +1174,7 @@
             <p class="hero-desc">Wholesale costs change constantly. If you are copying manufacturer sheets manually, your retail prices lag behind. PriceShield intercepts supplier files, sanitizes errors, and secures your profits automatically.</p>
         </section>
 
-        <!-- Plain-English Plain Introductory Breakdown Section (Added per user request) -->
+        <!-- Plain-English Plain Introductory Breakdown Section -->
         <section class="intro-section">
             <div class="intro-header">
                 <h2>Why Your Store Needs PriceShield</h2>
@@ -1479,19 +1338,24 @@
                     <div class="explanation-desc" id="explanation-desc-val">Wholesale cost and retail prices are aligned. Store generates healthy margins. No synchronization lags or errors present.</div>
                 </div>
 
-                <div class="control-buttons">
-                    <button class="autoplay-btn" id="autoplay-btn" onclick="toggleAutoplay()">
-                        <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <span>Auto-Play Scenario</span>
-                    </button>
-                    <button class="next-step-btn" id="next-step-btn" onclick="nextStep()">
-                        <span>Next Scenario Step</span>
-                        <svg style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;" viewBox="0 0 24 24">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
+                <div class="control-buttons-wrapper">
+                    <div class="control-buttons">
+                        <button class="autoplay-btn" id="autoplay-btn" onclick="toggleAutoplay()">
+                            <svg style="width:14px;height:14px;fill:currentColor;" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>Watch Live Demo</span>
+                        </button>
+                        <button class="next-step-btn" id="next-step-btn" onclick="nextStep()">
+                            <span>Next Step</span>
+                            <svg style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;" viewBox="0 0 24 24">
+                                <path d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="autoplay-caption">
+                        Tap "Watch Live Demo" to run the automated simulation showing a supplier price spike, a transaction loss, and how we intercept it in real-time.
+                    </div>
                 </div>
             </div>
 
@@ -1772,11 +1636,11 @@
             }
 
             // Update Next button text
-            const btn = document.getElementById('next-step-btn').querySelector('span');
+            const nextBtn = document.getElementById('next-step-btn').querySelector('span');
             if (currentStep === 3) {
-                btn.textContent = "Restart Scenario";
+                nextBtn.textContent = "Reset";
             } else {
-                btn.textContent = "Next Scenario Step";
+                nextBtn.textContent = "Next Step";
             }
         }
 
@@ -1789,7 +1653,6 @@
         // Autoplay Simulation Scenario
         function toggleAutoplay() {
             const btn = document.getElementById('autoplay-btn');
-            const icon = btn.querySelector('svg');
             const label = btn.querySelector('span');
 
             if (autoplayInterval) {
@@ -1797,13 +1660,11 @@
                 clearInterval(autoplayInterval);
                 autoplayInterval = null;
                 btn.classList.remove('is-playing');
-                label.textContent = "Auto-Play Scenario";
-                icon.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play glyph
+                label.textContent = "Watch Live Demo";
             } else {
                 // Start Autoplay
                 btn.classList.add('is-playing');
-                label.textContent = "Pause Scenario";
-                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Pause glyph
+                label.textContent = "Pause Simulation";
                 
                 // Set interval to step through every 5 seconds
                 autoplayInterval = setInterval(function() {
